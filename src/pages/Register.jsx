@@ -1,17 +1,19 @@
 import axios from 'axios'
 import React, { useState } from 'react'
-import { useDispatch } from 'react-redux'
+
 import { useNavigate } from 'react-router-dom'
-import { updateLoginStatus } from '../globalState/login/loginSlice'
+
 
 
 const Register = () => {
-  const dispatch=useDispatch()
+  
 const navigate=useNavigate()
-  const [error,setError]=useState("")
+  
   const [data,setData]=useState({
+    name:"",
     email:"",
-    password:""
+    password:"",
+    phone:""
   })
   const submitHandler=(event)=>{
     
@@ -19,19 +21,20 @@ const navigate=useNavigate()
     event.preventDefault()
     
     
-    axios.post(`${import.meta.env.VITE_API_DOMAIN}/api/user/login`,data,{withCredentials:true})
+    axios.post(`${import.meta.env.VITE_API_DOMAIN}/api/user/register`,data,{withCredentials:true})
     
     
     .then(res=>{
      
       console.log(res.data);
-      dispatch(updateLoginStatus(true))
-      navigate("/")
+      
+      navigate("/login")
       
     })
     .catch(err=>{
       
-      setError(err.response.data.message);
+      console.log(err.response);
+      
       
     })
   }
@@ -46,16 +49,27 @@ const navigate=useNavigate()
     <div>
       <form onSubmit={submitHandler}>
         <fieldset className="fieldset">
+  <legend className="fieldset-legend">Name</legend>
+  <input type="text" name="name" className="input"  onChange={changeHandler} value={data.name} />
+  
+</fieldset>
+        <fieldset className="fieldset">
   <legend className="fieldset-legend">Email</legend>
-  <input type="email" name="email" className="input" placeholder="Type your email" onChange={changeHandler} value={data.email} />
+  <input type="email" name="email" className="input"  onChange={changeHandler} value={data.email} />
   
 </fieldset>
 <fieldset className="fieldset">
   <legend className="fieldset-legend">password</legend>
-  <input type="password" name="password" className="input" placeholder="Type your password" onChange={changeHandler} value={data.password} />
-  <p className="text-red-500">{error}</p>
+  <input type="password" name="password" className="input"  onChange={changeHandler} value={data.password} />
+  
 </fieldset>
-<button className="btn btn-success" type='submit'>Login</button>
+
+        <fieldset className="fieldset">
+  <legend className="fieldset-legend">phone</legend>
+  <input type="text" name="phone" className="input"  onChange={changeHandler} value={data.phone} />
+  
+</fieldset>
+<button className="btn btn-success" type='submit'>Register</button>
       </form>
     </div>
   )

@@ -1,2 +1,6 @@
 @import "tailwindcss";
 @plugin "daisyui";
+.Toastify__toast-container {
+  z-index: 9999 !important;
+}
+
