@@ -68,6 +68,7 @@ const SaleListPage = () => {
               className="card bg-base-100 shadow-md border p-4 rounded-xl"
             >
               <h2 className="font-bold text-lg mb-2">{sale.sale_title}</h2>
+              
               <p className="text-gray-600">
                 Discount: <span className="font-semibold">{sale.percentage}%</span>
               </p>

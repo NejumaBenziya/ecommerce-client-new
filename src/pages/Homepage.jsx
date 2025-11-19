@@ -35,11 +35,14 @@ const Homepage = () => {
           "
         >
           {products
-            .slice()
-            .reverse()
-            .map((item) => (
-              <ProductCard product={item} key={item._id} />
-            ))}
+  .slice()
+  .reverse()
+  .map((item) =>
+    !item.isDeleted ? (
+      <ProductCard product={item} key={item._id} />
+    ) : null
+  )}
+
         </div>
       </div>
     </>

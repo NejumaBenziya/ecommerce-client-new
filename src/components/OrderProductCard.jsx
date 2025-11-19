@@ -49,7 +49,7 @@ const OrderProductCard = ({ product, quantity, cancelled }) => {
       </span>
     </div>
   ) : (
-    <p className="text-lg font-bold text-green-600">₹ {product.price}</p>
+    <p className="text-lg font-bold text-green-600">₹ {product.price*quantity}</p>
   )}
 </div>
 

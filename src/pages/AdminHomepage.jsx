@@ -22,11 +22,13 @@ const AdminHomepage = () => {
         </h1>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {products.slice().reverse().map((item) => (
+          {products.slice().reverse().map((item) => !item.isDeleted ?(
             <div key={item._id} className="transition-transform transform hover:scale-105">
               <AdminProductCard product={item} />
             </div>
-          ))}
+          ): null)}
+          
+
         </div>
       </div>
     </>

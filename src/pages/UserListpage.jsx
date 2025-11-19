@@ -29,7 +29,7 @@ const UserListpage = () => {
           
           
         })
-  }, []);
+  }, [role]);
   
   return (
   <>

@@ -33,12 +33,13 @@ const Sellerpages = () => {
       console.error("Error:", err.message);
     }
   });
-}, []);
+}, [status]);
   return (
     <div className='container m-auto'>
        <h1 className='text-2xl font-bold text-center mb-3'>Orders</h1>
        <div className=' gap-4'>
-       {orders.slice().reverse().map((item) => (
+          
+      {orders.slice().reverse().map((item) => (
           
         <OrderCard order={item} key={item._id}/>
          ))}

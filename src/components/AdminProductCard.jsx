@@ -45,21 +45,21 @@ const AdminProductCard =({product}) => {
   }
 };
 
-   const handleDelete = async (event) => {
+   const handleDelete = async () => {
   try {
-    const res = await axios.delete(
+    const res = await axios.put(
       `${import.meta.env.VITE_API_DOMAIN}/api/admin/remove-product`,
+      { _id: product._id }, // ✅ send correct body
       {
-        data: { _id: product._id },  
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
-        withCredentials: true
+        withCredentials: true,
       }
     );
 
     console.log(res.data);
-     setIsModalOpen(false);
+    setIsModalOpen(false);
   } catch (err) {
     console.log(err.response);
   }

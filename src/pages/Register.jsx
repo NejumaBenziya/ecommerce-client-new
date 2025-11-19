@@ -46,32 +46,80 @@ const navigate=useNavigate()
     
   }
   return (
-    <div>
-      <form onSubmit={submitHandler}>
-        <fieldset className="fieldset">
-  <legend className="fieldset-legend">Name</legend>
-  <input type="text" name="name" className="input"  onChange={changeHandler} value={data.name} />
-  
-</fieldset>
-        <fieldset className="fieldset">
-  <legend className="fieldset-legend">Email</legend>
-  <input type="email" name="email" className="input"  onChange={changeHandler} value={data.email} />
-  
-</fieldset>
-<fieldset className="fieldset">
-  <legend className="fieldset-legend">password</legend>
-  <input type="password" name="password" className="input"  onChange={changeHandler} value={data.password} />
-  
-</fieldset>
+    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-pink-50 to-blue-50 p-4">
+  <form
+    onSubmit={submitHandler}
+    className="bg-white shadow-lg rounded-2xl w-full max-w-md p-8 space-y-6"
+  >
+    <h2 className="text-2xl font-bold text-center text-gray-700">
+      Register
+    </h2>
 
-        <fieldset className="fieldset">
-  <legend className="fieldset-legend">phone</legend>
-  <input type="text" name="phone" className="input"  onChange={changeHandler} value={data.phone} />
-  
-</fieldset>
-<button className="btn btn-success" type='submit'>Register</button>
-      </form>
-    </div>
+    <fieldset className="fieldset">
+      <legend className="fieldset-legend text-sm font-semibold text-gray-600">
+        Name
+      </legend>
+      <input
+        type="text"
+        name="name"
+        className="input input-bordered w-full"
+        onChange={changeHandler}
+        value={data.name}
+        placeholder="Enter your name"
+      />
+    </fieldset>
+
+    <fieldset className="fieldset">
+      <legend className="fieldset-legend text-sm font-semibold text-gray-600">
+        Email
+      </legend>
+      <input
+        type="email"
+        name="email"
+        className="input input-bordered w-full"
+        onChange={changeHandler}
+        value={data.email}
+        placeholder="Enter your email"
+      />
+    </fieldset>
+
+    <fieldset className="fieldset">
+      <legend className="fieldset-legend text-sm font-semibold text-gray-600">
+        Password
+      </legend>
+      <input
+        type="password"
+        name="password"
+        className="input input-bordered w-full"
+        onChange={changeHandler}
+        value={data.password}
+        placeholder="Enter your password"
+      />
+    </fieldset>
+
+    <fieldset className="fieldset">
+      <legend className="fieldset-legend text-sm font-semibold text-gray-600">
+        Phone
+      </legend>
+      <input
+        type="text"
+        name="phone"
+        className="input input-bordered w-full"
+        onChange={changeHandler}
+        value={data.phone}
+        placeholder="Enter your phone number"
+      />
+    </fieldset>
+
+    <button
+      className="btn btn-success w-full rounded-lg text-white text-lg"
+      type="submit"
+    >
+      Register
+    </button>
+  </form>
+</div>
+
   )
 }
 
