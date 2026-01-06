@@ -1,59 +1,67 @@
-import axios from 'axios'
-import React, { useState } from 'react'
-import { useDispatch } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
-import { updateLoginStatus, setUserRole, setCartLength } from '../globalState/login/loginSlice'
-
-import { Link } from 'react-router-dom'
-
+import axios from "axios";
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { useNavigate, Link } from "react-router-dom";
+import { logout, setAuthUser } from "../globalState/login/loginSlice";
+import { useEffect } from "react";
 const Login = () => {
-  
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  const dispatch=useDispatch()
-const navigate=useNavigate()
-  const [error,setError]=useState("")
-  const [data,setData]=useState({
-    email:"",
-    password:""
-  })
+  const [error, setError] = useState("");
+  const [data, setData] = useState({
+    email: "",
+    password: "",
+  });
+  useEffect(() => {
+  dispatch(logout()); // 🔥 clear old user state
+}, []);
   const submitHandler = (event) => {
-  event.preventDefault();
+    event.preventDefault();
 
-  axios.post(`${import.meta.env.VITE_API_DOMAIN}/api/user/login`, data, { withCredentials: true })
-   .then(res => {
-  localStorage.setItem("token", res.data.token);
+    axios
+      .post(
+        "/api/user/login",   // ✅ USE PROXY
+        data,
+        { withCredentials: true }
+      )
+      .then((res) => {
+        dispatch(logout());
+        dispatch(
+          setAuthUser({
+            user: res.data.user,
+            role: res.data.user.role,
+          })
+        );
 
-  dispatch(updateLoginStatus(true));
-  dispatch(setUserRole(res.data.user.role));
-  dispatch(setCartLength(res.data.user.cartLength || 0));
+       // dispatch(setCartLength(res.data.user.cartLength || 0));
 
-  if (res.data.user.role === "admin") {
-    navigate("/admin/homepage");
-  } else if (res.data.user.role === "seller") {
-    navigate("/seller/homepage");
-  } else {
-    navigate("/");
-  }
-})
+        if (res.data.user.role === "admin") {
+          navigate("/admin/homepage");
+        } else if (res.data.user.role === "seller") {
+          navigate("/seller/homepage");
+        } else {
+          navigate("/");
+        }
+      })
+      .catch((err) => {
+        setError(err.response?.data?.message || "Something went wrong");
+      });
+  };
 
-    .catch(err => {
-      setError(err.response?.data?.message || "Something went wrong");
+  const changeHandler = (event) => {
+    setData({
+      ...data,
+      [event.target.name]: event.target.value,
     });
-};
+  };
 
-  const changeHandler=(event)=>{
-    const tempData={...data}
-    tempData[event.target.name]=event.target.value
-    setData(tempData)
-    
-    
-  }
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <div className="w-full max-w-md p-6 bg-white rounded-2xl shadow-lg">
         <h2 className="text-2xl font-bold text-center mb-6">Login</h2>
+
         <form onSubmit={submitHandler} className="space-y-4">
-          
           <fieldset className="fieldset">
             <legend className="fieldset-legend">Email</legend>
             <input
@@ -67,7 +75,6 @@ const navigate=useNavigate()
             />
           </fieldset>
 
-          {/* Password */}
           <fieldset className="fieldset">
             <legend className="fieldset-legend">Password</legend>
             <input
@@ -82,13 +89,11 @@ const navigate=useNavigate()
             {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
           </fieldset>
 
-          {/* Submit Button */}
           <button className="btn btn-success w-full" type="submit">
             Login
           </button>
         </form>
 
-        {/* Register link */}
         <p className="text-center mt-4">
           Not registered yet?{" "}
           <Link to="/register" className="text-accent font-semibold">
@@ -97,7 +102,7 @@ const navigate=useNavigate()
         </p>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Login
+export default Login;

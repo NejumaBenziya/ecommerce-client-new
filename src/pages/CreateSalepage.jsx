@@ -31,16 +31,14 @@ const CreateSalepage = () => {
 
     };
 
-    const res = await axios.post(
-      `${import.meta.env.VITE_API_DOMAIN}/api/admin/addsale`,
-      payload,
-      {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-        withCredentials: true,
-      }
-    );
+   const res = await axios.post(
+  "/api/admin/addsale",   // ✅ use proxy
+  payload,
+  {
+    withCredentials: true, // ✅ cookie auth only
+  }
+);
+
 
     setMessage("✅ Sale created successfully!");
     setFormData({ sale_title: "", percentage: "", valid_till: "" });

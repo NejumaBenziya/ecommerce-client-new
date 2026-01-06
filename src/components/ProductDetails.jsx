@@ -10,11 +10,9 @@ function ProductDetails({ product }) {
   const [showToast, setShowToast] = useState(false);
 
   useEffect(() => {
-    axios
-      .get(`${import.meta.env.VITE_API_DOMAIN}/api/user/review-list`, {
-        params: { productId: product._id },
-        withCredentials: true,
-      })
+    axios.get("/api/user/review-list", {
+  params: { productId: product._id },
+})
       .then((res) => {
         setReviews(res.data.reviews || []);
         console.log("Fetched reviews:", res.data.reviews);
@@ -42,10 +40,11 @@ function ProductDetails({ product }) {
         const productId = product._id;
 
         const res = await axios.put(
-          `${import.meta.env.VITE_API_DOMAIN}/api/user/addtocart`,
-          { productId },
-          { headers: { Authorization: `Bearer ${token}` }, withCredentials: true }
-        );
+  "/api/user/addtocart",
+  { productId: product._id },
+  { withCredentials: true }
+);
+
 
         console.log(res.data);
         setShowToast(true);

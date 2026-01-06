@@ -12,14 +12,13 @@ const OrderDetailspage = () => {
 
   useEffect(() => {
     if (orderId) {
-      axios
-        .get(`${import.meta.env.VITE_API_DOMAIN}/api/seller/order-details`, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-          withCredentials: true,
-          params: { orderId },
-        })
+      axios.get(
+  "/api/seller/order-details",   // ✅ proxy-relative
+  {
+    params: { orderId },
+    withCredentials: true,       // ✅ cookie auth only
+  }
+)
         .then((res) => setOrder(res.data.order))
         .catch((err) => console.log(err));
     }

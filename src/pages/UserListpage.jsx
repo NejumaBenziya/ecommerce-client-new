@@ -10,11 +10,13 @@ const UserListpage = () => {
       const role=params.get("role");
      
     useEffect(() => {
-    axios.get(`${import.meta.env.VITE_API_DOMAIN}/api/admin/user-list`,{headers: {
-      Authorization: `Bearer ${localStorage.getItem("token")}` 
-    },params: {
-        role: role},withCredentials:true})
-    
+   axios.get(
+  "/api/admin/user-list",
+  {
+    params: { role },
+    withCredentials: true, // ✅ cookie-based auth
+  }
+)
     .then(res=>{
         
          
@@ -29,7 +31,7 @@ const UserListpage = () => {
           
           
         })
-  }, [role]);
+  }, [role,users]);
   
   return (
   <>

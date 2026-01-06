@@ -5,10 +5,11 @@ import React from 'react'
 const CartCard = ({product}) => {
    const clickHandler = async (event) => {
    
-axios.put(`${import.meta.env.VITE_API_DOMAIN}/api/user/removecart`,{productId:product._id},{headers: {
-      Authorization: `Bearer ${localStorage.getItem("token")}` 
-    },withCredentials:true})
-    
+axios.put(
+  "/api/user/removecart",
+  { productId: product._id },
+  { withCredentials: true }
+)
     .then(res=>{
         
          
@@ -29,10 +30,11 @@ axios.put(`${import.meta.env.VITE_API_DOMAIN}/api/user/removecart`,{productId:pr
         const token = localStorage.getItem("token");
 
         const res = await axios.put(
-          `${import.meta.env.VITE_API_DOMAIN}/api/user/addtocart`,
-          { productId: product._id },
-          { headers: { Authorization: `Bearer ${token}` }, withCredentials: true }
-        );
+  "/api/user/addtocart",
+  { productId: product._id },
+  { withCredentials: true }
+);
+
 
         console.log(res.data);
       }catch (err) {
@@ -41,10 +43,11 @@ axios.put(`${import.meta.env.VITE_API_DOMAIN}/api/user/removecart`,{productId:pr
    }
    const minusHandler = async (event) => {
    
-axios.put(`${import.meta.env.VITE_API_DOMAIN}/api/user/quantity`,{productId:product._id},{headers: {
-      Authorization: `Bearer ${localStorage.getItem("token")}` 
-    },withCredentials:true})
-    
+axios.put(
+  "/api/user/quantity",
+  { productId: product._id },
+  { withCredentials: true }
+)
     .then(res=>{
         
          
@@ -108,17 +111,17 @@ axios.put(`${import.meta.env.VITE_API_DOMAIN}/api/user/quantity`,{productId:prod
   {product.salePrice ? (
     <div className="flex items-center gap-2">
       <p className="text-lg font-bold text-red-600">
-        ₹ {product.salePrice}
+        ₹ {product.salePrice}*{product.quantity}={Math.round(product.salePrice*product.quantity)}
       </p>
       <p className="text-sm text-gray-500 line-through">
-        ₹ {product.price}
+        ₹ {product.price}*{product.quantity}={Math.round(product.price*product.quantity)}
       </p>
       <span className="text-xs bg-red-100 text-red-600 font-semibold px-2 py-0.5 rounded-full">
         {Math.round(((product.price - product.salePrice) / product.price) * 100)}% OFF
       </span>
     </div>
   ) : (
-    <p className="text-lg font-bold text-green-600">₹ {product.price}</p>
+    <p className="text-lg font-bold text-green-600">₹ {product.price}*{product.quantity}={Math.round(product.price*product.quantity)}</p>
   )}
 </div>
 

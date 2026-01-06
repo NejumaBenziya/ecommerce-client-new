@@ -14,30 +14,31 @@ const Reviewpage = () => {
   const rating = params.get("rating");
   const orderId= params.get("orderId");
   useEffect(() => {
-    if (productId) {
-      axios
-        .get(`${import.meta.env.VITE_API_DOMAIN}/api/user/product`, {
-          params: { productId },
-          withCredentials: true,
-        })
-        .then((res) => setProduct(res.data.product))
-        .catch((err) => console.log(err));
-    }
-  }, [productId]);
+  if (productId) {
+    axios
+      .get("/api/user/product", {
+        params: { productId },
+      })
+      .then((res) => setProduct(res.data.product))
+      .catch((err) => console.log(err));
+  }
+}, [productId]);
+
 
   const handleClick = async (e) => {
   e.preventDefault();
 
-  
   try {
     const res = await axios.post(
-      `${import.meta.env.VITE_API_DOMAIN}/api/user/add-review`,
-      { product_id: product._id, rating, feedback ,orderId},
+      "/api/user/add-review",
       {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-        withCredentials: true,
+        product_id: product._id,
+        rating,
+        feedback,
+        orderId,
+      },
+      {
+        withCredentials: true, // ✅ cookie auth
       }
     );
 
@@ -53,7 +54,6 @@ const Reviewpage = () => {
     toast.error("⚠️ Failed to submit review!");
   }
 };
-
 
   return (
     <div className="max-w-xs mx-auto bg-white shadow-lg rounded-2xl overflow-hidden transition transform hover:scale-105 hover:shadow-xl">

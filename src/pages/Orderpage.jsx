@@ -18,41 +18,37 @@ function Orderpage() {
   const navigate = useNavigate();
 
   const submitHandler = async (event) => {
-    event.preventDefault();
-    setLoading(true);
+  event.preventDefault();
+  setLoading(true);
 
-    try {
-      const res = await axios.post(
-        `${import.meta.env.VITE_API_DOMAIN}/api/user/order`,
-        data,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-          withCredentials: true,
-        }
-      );
-
-      toast.success("✅ Order placed successfully!", { autoClose: 2000 });
-
-      // wait for toast then navigate
-      setTimeout(() => {
-        navigate("/user-orders");
-      }, 2000);
-
-      console.log(res.data);
-    } catch (err) {
-      console.error(err.response);
-
-      if (err.response?.status === 400) {
-        toast.error(err.response.data.message || "Out of stock ❌");
-      } else {
-        toast.error("Something went wrong. Please try again.");
+  try {
+    const res = await axios.post(
+      "/api/user/order",   // ✅ USE PROXY
+      data,
+      {
+        withCredentials: true, // ✅ COOKIE AUTH ONLY
       }
-    } finally {
-      setLoading(false);
+    );
+
+    toast.success("✅ Order placed successfully!", { autoClose: 2000 });
+
+    setTimeout(() => {
+      navigate("/user-orders");
+    }, 2000);
+
+    console.log(res.data);
+  } catch (err) {
+    console.error(err.response);
+
+    if (err.response?.status === 400) {
+      toast.error(err.response.data.message || "Out of stock ❌");
+    } else {
+      toast.error("Something went wrong. Please try again.");
     }
-  };
+  } finally {
+    setLoading(false);
+  }
+};
 
   const changeHandler = (event) => {
     setData({

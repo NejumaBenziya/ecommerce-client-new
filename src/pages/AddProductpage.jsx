@@ -19,16 +19,14 @@ const AddProductpage = () => {
     event.preventDefault();
 
     try {
-      const res = await axios.post(
-        `${import.meta.env.VITE_API_DOMAIN}/api/admin/addproduct`,
-        data,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-          withCredentials: true,
-        }
-      );
+     const res = await axios.post(
+  "/api/admin/addproduct",   // ✅ use proxy
+  data,
+  {
+    withCredentials: true,   // ✅ cookie auth only
+  }
+);
+
 
       console.log(" Product added:", res.data);
       navigate("/admin/homepage");

@@ -7,11 +7,13 @@ const AdminHomepage = () => {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
-    axios
-      .get(`${import.meta.env.VITE_API_DOMAIN}/api/user/product-list`, { withCredentials: true })
+    axios.get(
+  "/api/user/product-list",
+  { withCredentials: true } // optional for public route
+)
       .then(res => setProducts(res.data.products))
       .catch(err => console.log(err.response));
-  }, []);
+  }, [products]);
 
   return (
     <>

@@ -1,8 +1,22 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
-
+import { Link , useNavigate } from 'react-router-dom'
+import axios from 'axios';
+import {  useDispatch } from "react-redux";
+import { logout } from "../globalState/login/loginSlice";
 
 function AdminHeader() {
+   const dispatch = useDispatch();
+  const navigate = useNavigate();
+   const handleLogout = async () => {
+  try {
+    await axios.post("/api/user/logout", {}, { withCredentials: true });
+  } catch (err) {
+    console.error("Logout error", err);
+  } finally {
+    dispatch(logout());
+    navigate("/login");
+  }
+};
   return (
      <div className="navbar bg-base-100 shadow-sm">
       <div className="flex-1">
@@ -13,13 +27,22 @@ function AdminHeader() {
           <ul
             tabIndex={0}
             className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow">
-            <li><Link to="/admin/homepage">Homepage</Link></li>
+            <li><Link to="/admin/homepage"
+             onClick={() => {
+  
+  document.activeElement.blur();
+             }}>
+            Homepage</Link></li>
             <li><p><b>Categories</b></p></li>
             <li><Link 
       to={{
         pathname: "/admin/adminproductlist",
         search: "?category=makeup"
       }}
+       onClick={() => {
+  
+  document.activeElement.blur();
+}}
     >
       Makeup
     </Link>
@@ -29,6 +52,10 @@ function AdminHeader() {
         pathname: "/admin/adminproductlist",
         search: "?category=skin"
       }}
+       onClick={() => {
+  
+  document.activeElement.blur();
+}}
     >
       Skin-care
     </Link></li>
@@ -37,6 +64,10 @@ function AdminHeader() {
         pathname: "/admin/adminproductlist",
         search: "?category=hair"
       }}
+       onClick={() => {
+  
+  document.activeElement.blur();
+}}
     >
       Hair-care
     </Link>
@@ -46,17 +77,33 @@ function AdminHeader() {
         pathname: "/admin/adminproductlist",
         search: "?category=bath and body"
       }}
+       onClick={() => {
+  
+  document.activeElement.blur();
+}}
     >
       Bath and Body
     </Link>
     </li>
-    <li><Link to="/admin/addproduct"><b>Add product</b></Link></li>
-    <li><Link to="/admin/user-list"><b>User List</b></Link></li>
+    <li><Link to="/admin/addproduct"
+     onClick={() => {
+  
+  document.activeElement.blur();
+}}><b>Add product</b></Link></li>
+    <li><Link to="/admin/user-list"
+     onClick={() => {
+  
+  document.activeElement.blur();
+}}><b>User List</b></Link></li>
     <li><Link 
       to={{
         pathname: "/admin/user-list",
         search: "?role=admin"
       }}
+       onClick={() => {
+  
+  document.activeElement.blur();
+}}
     >
       admin
     </Link>
@@ -66,6 +113,10 @@ function AdminHeader() {
         pathname: "/admin/user-list",
         search: "?role=seller"
       }}
+       onClick={() => {
+  
+  document.activeElement.blur();
+}}
     >
       seller
     </Link>
@@ -75,12 +126,32 @@ function AdminHeader() {
         pathname: "/admin/user-list",
         search: "?role=member"
       }}
+       onClick={() => {
+  
+  document.activeElement.blur();
+}}
     >
       member
     </Link>
     </li>
-    <li><Link to="/admin/create-sale"><b>Create new sale</b></Link></li>
-    <li><Link to="/admin/sale-list"><b>Sale List</b></Link></li>
+    <li><Link to="/admin/create-sale"
+     onClick={() => {
+  
+  document.activeElement.blur();
+}}><b>Create new sale</b></Link></li>
+    <li><Link to="/admin/sale-list"
+     onClick={() => {
+  
+  document.activeElement.blur();
+}}><b>Sale List</b></Link></li>
+  <li>
+                  <button
+                    onClick={handleLogout}
+                    className="text-red-600 font-semibold"
+                  >
+                    Logout
+                  </button>
+                </li>
           </ul>
         </div>
         <Link to="/admin/homepage" className="btn btn-ghost text-xl">Luna Admin</Link>

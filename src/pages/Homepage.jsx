@@ -7,10 +7,7 @@ const Homepage = () => {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
-    axios
-      .get(`${import.meta.env.VITE_API_DOMAIN}/api/user/product-list`, {
-        withCredentials: true,
-      })
+    axios.get("/api/user/product-list", { withCredentials: true })
       .then((res) => {
         setProducts(res.data.products);
       })

@@ -1,21 +1,42 @@
-import React from 'react'
-import { Outlet } from 'react-router-dom'
-import Header from '../components/Header'
-import Footer from '../components/Footer'
+import { useEffect } from "react";
+import { Outlet } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import Header from "../components/Header";
+import Footer from "../components/Footer";
+import { checkAuth } from "../api/authApi";
+import { setAuthUser, logout, authFinished } from "../globalState/login/loginSlice";
 
 const UserLayout = () => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    checkAuth()
+      .then((res) => {
+        dispatch(
+          setAuthUser({
+            user: res.data.user,
+            role: res.data.user.role,
+            cartLength: res.data.cartLength,
+          })
+        );
+      })
+      .catch(() => {
+        dispatch(logout());
+      })
+      .finally(() => {
+        dispatch(authFinished()); // ✅ ALWAYS CALLED
+      });
+  }, [dispatch]);
+
   return (
- <div className="flex flex-col min-h-screen">
-  <Header />
-  <main className="flex-1">
-    <Outlet />
-  </main>
-  <Footer />
-</div>
+    <div className="flex flex-col min-h-screen">
+      <Header />
+      <main className="flex-1">
+        <Outlet />
+      </main>
+      <Footer />
+    </div>
+  );
+};
 
-
-
-  )
-}
-
-export default UserLayout
+export default UserLayout;

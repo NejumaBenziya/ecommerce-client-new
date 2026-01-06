@@ -121,11 +121,10 @@ const router=createBrowserRouter([
 
 
 createRoot(document.getElementById('root')).render(
-  <StrictMode>
+  
     <Provider store={store}>
    <RouterProvider router={router}/>
    <ToastContainer position="top-right" autoClose={2000} theme="colored" />
    </Provider>
   
-  </StrictMode>
 )

@@ -14,14 +14,13 @@ const Sellerpages = () => {
   console.log("API Domain:", import.meta.env.VITE_API_DOMAIN);
   console.log("Token:", localStorage.getItem("token"));
 
-  axios.get(`${import.meta.env.VITE_API_DOMAIN}/api/seller/orders-list`, {
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem("token")}`
-    },
-    withCredentials: true, params: {
-    status: status  
+  axios.get(
+  "/api/seller/orders-list",
+  {
+    params: { status },
+    withCredentials: true, // ✅ cookie-based auth
   }
-  })
+)
   .then(res => {
     setOrders(res.data.orders);
     console.log("Orders fetched:", res.data.orders);

@@ -12,44 +12,36 @@ const SaleListPage = () => {
   }, []);
 
   const fetchSales = async () => {
-    try {
-      const res = await axios.get(
-        `${import.meta.env.VITE_API_DOMAIN}/api/admin/sale-list`,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-          withCredentials: true,
-        }
-      );
-      setSales(res.data.sales || []);
-    } catch (err) {
-      setError("❌ Failed to fetch sales");
-    } finally {
-      setLoading(false);
-    }
-  };
+  try {
+    const res = await axios.get("/api/admin/sale-list", {
+      withCredentials: true, // ✅ cookie auth
+    });
+    setSales(res.data.sales || []);
+  } catch (err) {
+    setError("❌ Failed to fetch sales");
+  } finally {
+    setLoading(false);
+  }
+};
 
-  const handleDelete = async (saleId) => {
-    if (!window.confirm("Are you sure you want to delete this sale?")) return;
 
-    setDeleting(saleId);
-    try {
-      await axios.delete(`${import.meta.env.VITE_API_DOMAIN}/api/admin/sales/${saleId}`, {
-  headers: {
-    Authorization: `Bearer ${localStorage.getItem("token")}`,
-  },
-  withCredentials: true,
-});
+ const handleDelete = async (saleId) => {
+  if (!window.confirm("Are you sure you want to delete this sale?")) return;
 
-      // refresh list
-      setSales((prev) => prev.filter((sale) => sale._id !== saleId));
-    } catch (err) {
-      alert("❌ Failed to delete sale");
-    } finally {
-      setDeleting(null);
-    }
-  };
+  setDeleting(saleId);
+  try {
+    await axios.delete(`/api/admin/sales/${saleId}`, {
+      withCredentials: true, // ✅ cookie auth
+    });
+
+    setSales((prev) => prev.filter((sale) => sale._id !== saleId));
+  } catch (err) {
+    alert("❌ Failed to delete sale");
+  } finally {
+    setDeleting(null);
+  }
+};
+
 
   if (loading) return <p className="text-center mt-10">Loading sales...</p>;
   if (error) return <p className="text-center text-red-500 mt-10">{error}</p>;

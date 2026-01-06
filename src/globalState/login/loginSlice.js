@@ -1,30 +1,38 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-export const loginSlice = createSlice({
+const initialState = {
+  isLoggedIn: false,
+  role: null,
+  cartLength: 0,
+  user: null,
+  authChecked: false, // ✅ IMPORTANT
+};
+
+const authSlice = createSlice({
   name: "auth",
-  initialState: {
-    isLoggedIn: false,
-    role: null,
-    cartLength: 0,
-  },
+  initialState,
   reducers: {
-    updateLoginStatus: (state, action) => {
-      state.isLoggedIn = action.payload;
+    setAuthUser: (state, action) => {
+      state.user = action.payload.user;
+      state.role = action.payload.role;
+      state.isLoggedIn = true;
+      state.cartLength = action.payload.cartLength || 0;
+      state.authChecked = true; // ✅ mark done
     },
-    setUserRole: (state, action) => {
-      state.role = action.payload;
-    },
-    setCartLength: (state, action) => {
-      state.cartLength = action.payload;
-    },
+
     logout: (state) => {
       state.isLoggedIn = false;
       state.role = null;
       state.cartLength = 0;
+      state.user = null;
+      state.authChecked = true; // ✅ still checked
+    },
+
+    authFinished: (state) => {
+      state.authChecked = true; // ✅ for failed auth
     },
   },
 });
 
-export const { updateLoginStatus, setUserRole, setCartLength, logout } =
-  loginSlice.actions;
-export default loginSlice.reducer;
+export const { setAuthUser, logout, authFinished } = authSlice.actions;
+export default authSlice.reducer;

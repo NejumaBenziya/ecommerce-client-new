@@ -21,8 +21,7 @@ const navigate=useNavigate()
     event.preventDefault()
     
     
-    axios.post(`${import.meta.env.VITE_API_DOMAIN}/api/user/register`,data,{withCredentials:true})
-    
+   axios.post("/api/user/register", data)
     
     .then(res=>{
      

@@ -6,12 +6,12 @@ const UserOrderpage = () => {
   const [orders, setOrders] = useState([]);
 
   useEffect(() => {
-    axios.get(`${import.meta.env.VITE_API_DOMAIN}/api/user/user-orders`, {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`
-      },
-      withCredentials: true
-    })
+    axios.get(
+  "/api/user/user-orders",
+  {
+    withCredentials: true, // ✅ cookie-based auth
+  }
+)
       .then(res => {
         setOrders(res.data.orders);
         console.log("Response:", res.data);
@@ -23,7 +23,7 @@ const UserOrderpage = () => {
           console.error("Error:", err.message);
         }
       });
-  }, []);
+  }, [orders]);
 
   return (
     <div className="container mx-auto mt-10"> 

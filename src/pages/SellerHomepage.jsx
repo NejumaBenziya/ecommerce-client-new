@@ -8,12 +8,12 @@ const SellerHomepage = () => {
   
   useEffect(() => {
     console.log("Fetching seller orders...");
-    axios.get(`${import.meta.env.VITE_API_DOMAIN}/api/seller/orders-list`, {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`
-      },
-      withCredentials: true
-    })
+    axios.get(
+  "/api/seller/orders-list",
+  {
+    withCredentials: true, // ✅ cookie-based auth
+  }
+)
     .then(res => {
       setOrders(res.data.orders);
       console.log("Orders fetched:", res.data.orders);

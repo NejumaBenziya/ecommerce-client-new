@@ -12,11 +12,14 @@ const Categoriespage = () => {
   const category = params.get("category");
 
   useEffect(() => {
-    axios
-      .get(`${import.meta.env.VITE_API_DOMAIN}/api/user/product-list`, {
-        params: { productCategory: category },
-        withCredentials: true,
-      })
+   axios.get(
+  "/api/user/product-list",
+  {
+    params: { productCategory: category },
+    withCredentials: true, // optional here, but OK to keep
+  }
+)
+
       .then((res) => setProducts(res.data.products))
       .catch((err) => setError(err.response?.data?.message || "Something went wrong"));
   }, [category]);

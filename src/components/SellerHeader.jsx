@@ -1,7 +1,21 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
-
+import { Link , useNavigate } from 'react-router-dom'
+import axios from 'axios';
+import {  useDispatch } from "react-redux";
+import { logout } from "../globalState/login/loginSlice";
 const SellerHeader = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+    const handleLogout = async () => {
+  try {
+    await axios.post("/api/user/logout", {}, { withCredentials: true });
+  } catch (err) {
+    console.error("Logout error", err);
+  } finally {
+    dispatch(logout());
+    navigate("/login");
+  }
+};
   return (
     <div className="navbar bg-base-100 shadow-sm">
           <div className="flex-1">
@@ -12,12 +26,21 @@ const SellerHeader = () => {
               <ul
                 tabIndex={0}
                 className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow">
-                <li><Link to="/seller/homepage">Homepage</Link></li>
+                <li><Link to="/seller/homepage"
+                onClick={() => {
+  
+  document.activeElement.blur();
+}}>Homepage</Link></li>
                <li><Link 
           to={{
             pathname: "/seller/orders-list",
             search: "?status=ordered"
           }}
+          onClick={() => {
+  
+  document.activeElement.blur();
+}}
+
         >
           Pending orders
         </Link>
@@ -27,6 +50,10 @@ const SellerHeader = () => {
             pathname: "/seller/orders-list",
             search: "?status=shipped"
           }}
+          onClick={() => {
+  
+  document.activeElement.blur();
+}}
         >
           Shipped Orders
         </Link></li>
@@ -35,11 +62,22 @@ const SellerHeader = () => {
             pathname: "/seller/orders-list",
             search: "?status=delivered"
           }}
+          onClick={() => {
+  
+  document.activeElement.blur();
+}}
         >
           Delivered Orders
         </Link>
         </li>
-        
+        <li>
+                  <button
+                    onClick={handleLogout}
+                    className="text-red-600 font-semibold"
+                  >
+                    Logout
+                  </button>
+                </li>
               </ul>
             </div>
             <Link to="/seller/homepage" className="btn btn-ghost text-xl">Luna Seller</Link>

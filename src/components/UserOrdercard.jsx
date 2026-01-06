@@ -13,15 +13,11 @@ const UserOrdercard = ({ product, productStatus ,orderId }) => {
      const handleCancel = async (event) => {
   try {
    const res = await axios.put(
-  `${import.meta.env.VITE_API_DOMAIN}/api/user/cancel-order`,
-  { orderId: orderId ,productId:product.productId._id}, // <-- request body
-  {
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem("token")}`,
-    },
-    withCredentials: true, // <-- config
-  }
+  "/api/user/cancel-order",
+  { orderId, productId: product.productId._id },
+  { withCredentials: true }
 );
+
 
 
     console.log(res.data);
@@ -37,15 +33,11 @@ const UserOrdercard = ({ product, productStatus ,orderId }) => {
    
     try {
     const res = await axios.post(
-      `${import.meta.env.VITE_API_DOMAIN}/api/user/review`,
-      { product_id: product.productId._id, rating:value }, 
-      {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-        withCredentials: true,
-      }
-    );
+  "/api/user/review",
+  { product_id: product.productId._id, rating: value },
+  { withCredentials: true }
+);
+
 
     console.log("  Rating done :", res.data);
   } catch (err) {

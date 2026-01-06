@@ -7,12 +7,10 @@ const AdminProductCard =({product}) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
    const [sales, setSales] = useState([]);
   useEffect(() => {
-      axios
-        .get(`${import.meta.env.VITE_API_DOMAIN}/api/admin/sale-list`, 
-          {headers: {
-      Authorization: `Bearer ${localStorage.getItem("token")}` 
-    },withCredentials:true}
-          )
+     axios.get("/api/admin/sale-list", {
+  withCredentials: true,
+})
+
         .then((res) => {
           setSales(res.data.sales || []);
           console.log(res);
@@ -25,19 +23,17 @@ const AdminProductCard =({product}) => {
     }, []);
     const changeHandler = async (event) => {
   try {
-    const res = await axios.put(
-      `${import.meta.env.VITE_API_DOMAIN}/api/admin/add-sale`,
-      {
-        productId: product._id,   // ✅ request body directly
-        saleId: event.target.value
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`
-        },
-        withCredentials: true
-      }
-    );
+    axios.put(
+  "/api/admin/add-sale",
+  {
+    productId: product._id,
+    saleId: event.target.value,
+  },
+  {
+    withCredentials: true,
+  }
+);
+
 
     console.log(res.data);
   } catch (err) {
@@ -48,15 +44,13 @@ const AdminProductCard =({product}) => {
    const handleDelete = async () => {
   try {
     const res = await axios.put(
-      `${import.meta.env.VITE_API_DOMAIN}/api/admin/remove-product`,
-      { _id: product._id }, // ✅ send correct body
-      {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-        withCredentials: true,
-      }
-    );
+  "/api/admin/remove-product",
+  { _id: product._id },
+  {
+    withCredentials: true,
+  }
+);
+
 
     console.log(res.data);
     setIsModalOpen(false);

@@ -7,15 +7,11 @@ const UserCard = ({user}) => {
 
   try {
     const res = await axios.put(
-      `${import.meta.env.VITE_API_DOMAIN}/api/admin/update-role`,
-      { _id: user._id, role:role }, 
-      {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-        withCredentials: true,
-      }
-    );
+  "/api/admin/update-role",
+  { _id: user._id, role },
+  { withCredentials: true }
+);
+
 
     console.log(" Role updated:", res.data);
   } catch (err) {

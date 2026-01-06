@@ -15,11 +15,10 @@ console.log(productId)
 
   useEffect(() => {
     if (productId) {
-         axios.get(`${import.meta.env.VITE_API_DOMAIN}/api/user/product`, {
-  params: {
-        productId: productId}},{
-   
-    withCredentials: true})
+         axios.get("/api/user/product", {
+  params: { productId },
+  withCredentials: true, // optional for public route
+})
       
         .then(res => setProduct(res.data.product))
         .catch(err => console.log(err));
