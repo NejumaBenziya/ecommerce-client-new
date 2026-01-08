@@ -1,7 +1,7 @@
 import { useLocation } from "react-router-dom";
 import ProductCard from "../components/ProductCard";
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import api from "../api/axios";
 
 const Categoriespage = () => {
   const [products, setProducts] = useState([]);
@@ -12,7 +12,7 @@ const Categoriespage = () => {
   const category = params.get("category");
 
   useEffect(() => {
-   axios.get(
+   api.get(
   "/api/user/product-list",
   {
     params: { productCategory: category },
