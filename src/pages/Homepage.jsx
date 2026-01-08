@@ -9,6 +9,7 @@ const Homepage = () => {
   useEffect(() => {
     api.get("/api/user/product-list", { withCredentials: true })
       .then((res) => {
+        console.log("FULL RESPONSE:", res.data);
         const safeProducts = Array.isArray(res.data.products)
         ? res.data.products
         : [];
