@@ -9,7 +9,11 @@ const Homepage = () => {
   useEffect(() => {
     axios.get("/api/user/product-list", { withCredentials: true })
       .then((res) => {
-        setProducts(res.data.products);
+        const safeProducts = Array.isArray(res.data.products)
+        ? res.data.products
+        : [];
+
+      setProducts(safeProducts);
       })
       .catch((err) => {
         console.log(err.response);
@@ -31,14 +35,14 @@ const Homepage = () => {
             lg:grid-cols-4  
           "
         >
-          {products
+          {(Array.isArray(products) ? products : [])
   .slice()
   .reverse()
-  .map((item) =>
-    !item.isDeleted ? (
-      <ProductCard product={item} key={item._id} />
-    ) : null
-  )}
+  .filter((item) => !item.isDeleted)
+  .map((item) => (
+    <ProductCard product={item} key={item._id} />
+  ))}
+
 
         </div>
       </div>
