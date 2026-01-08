@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import axios from "axios";
+import api from "../api/axios";
 
 const CreateSalepage = () => {
   const [formData, setFormData] = useState({
@@ -31,7 +31,7 @@ const CreateSalepage = () => {
 
     };
 
-   const res = await axios.post(
+   const res = await api.post(
   "/api/admin/addsale",   // ✅ use proxy
   payload,
   {

@@ -1,11 +1,11 @@
-import axios from 'axios'
+import api from "../api/axios";
 import React from 'react'
 
 
 const CartCard = ({product}) => {
    const clickHandler = async (event) => {
    
-axios.put(
+api.put(
   "/api/user/removecart",
   { productId: product._id },
   { withCredentials: true }
@@ -29,7 +29,7 @@ axios.put(
      try {
         const token = localStorage.getItem("token");
 
-        const res = await axios.put(
+        const res = await api.put(
   "/api/user/addtocart",
   { productId: product._id },
   { withCredentials: true }
@@ -43,7 +43,7 @@ axios.put(
    }
    const minusHandler = async (event) => {
    
-axios.put(
+api.put(
   "/api/user/quantity",
   { productId: product._id },
   { withCredentials: true }

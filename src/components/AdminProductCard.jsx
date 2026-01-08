@@ -1,4 +1,4 @@
-import axios from 'axios'
+import api from "../api/axios";
 import React, { useEffect, useState } from 'react'
 import DeleteModal from './DeleteModal';
 
@@ -7,7 +7,7 @@ const AdminProductCard =({product}) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
    const [sales, setSales] = useState([]);
   useEffect(() => {
-     axios.get("/api/admin/sale-list", {
+     api.get("/api/admin/sale-list", {
   withCredentials: true,
 })
 
@@ -23,7 +23,7 @@ const AdminProductCard =({product}) => {
     }, []);
     const changeHandler = async (event) => {
   try {
-    axios.put(
+    api.put(
   "/api/admin/add-sale",
   {
     productId: product._id,
@@ -43,7 +43,7 @@ const AdminProductCard =({product}) => {
 
    const handleDelete = async () => {
   try {
-    const res = await axios.put(
+    const res = await api.put(
   "/api/admin/remove-product",
   { _id: product._id },
   {

@@ -1,4 +1,4 @@
-import axios from "axios";
+import api from "../api/axios";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -19,7 +19,7 @@ const AddProductpage = () => {
     event.preventDefault();
 
     try {
-     const res = await axios.post(
+     const res = await api.post(
   "/api/admin/addproduct",   // ✅ use proxy
   data,
   {

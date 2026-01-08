@@ -1,4 +1,4 @@
-import axios from 'axios';
+import api from "../api/axios";
 import React, { useEffect, useState } from 'react'
 import UserOrdercard from '../components/UserOrdercard';
 
@@ -6,7 +6,7 @@ const UserOrderpage = () => {
   const [orders, setOrders] = useState([]);
 
   useEffect(() => {
-    axios.get(
+    api.get(
   "/api/user/user-orders",
   {
     withCredentials: true, // ✅ cookie-based auth

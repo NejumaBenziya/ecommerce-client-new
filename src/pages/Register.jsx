@@ -1,4 +1,4 @@
-import axios from 'axios'
+import api from "../api/axios";
 import React, { useState } from 'react'
 
 import { useNavigate } from 'react-router-dom'
@@ -21,7 +21,7 @@ const navigate=useNavigate()
     event.preventDefault()
     
     
-   axios.post("/api/user/register", data)
+   api.post("/api/user/register", data)
     
     .then(res=>{
      

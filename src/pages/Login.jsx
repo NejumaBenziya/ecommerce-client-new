@@ -1,4 +1,4 @@
-import axios from "axios";
+import api from "../api/axios";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate, Link } from "react-router-dom";
@@ -19,7 +19,7 @@ const Login = () => {
   const submitHandler = (event) => {
     event.preventDefault();
 
-    axios
+    api
       .post(
         "/api/user/login",   // ✅ USE PROXY
         data,

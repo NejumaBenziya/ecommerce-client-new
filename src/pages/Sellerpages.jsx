@@ -1,4 +1,4 @@
-import axios from 'axios';
+import api from "../api/axios";
 import React, { useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom';
 import OrderCard from '../components/OrderCard';
@@ -14,7 +14,7 @@ const Sellerpages = () => {
   console.log("API Domain:", import.meta.env.VITE_API_DOMAIN);
   console.log("Token:", localStorage.getItem("token"));
 
-  axios.get(
+  api.get(
   "/api/seller/orders-list",
   {
     params: { status },

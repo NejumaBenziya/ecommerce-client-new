@@ -1,4 +1,4 @@
-import axios from 'axios';
+import api from "../api/axios";
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom';
 import CancelModal from './CancelModal';
@@ -12,7 +12,7 @@ const UserOrdercard = ({ product, productStatus ,orderId }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
      const handleCancel = async (event) => {
   try {
-   const res = await axios.put(
+   const res = await api.put(
   "/api/user/cancel-order",
   { orderId, productId: product.productId._id },
   { withCredentials: true }
@@ -32,7 +32,7 @@ const UserOrdercard = ({ product, productStatus ,orderId }) => {
     setRating(value);
    
     try {
-    const res = await axios.post(
+    const res = await api.post(
   "/api/user/review",
   { product_id: product.productId._id, rating: value },
   { withCredentials: true }

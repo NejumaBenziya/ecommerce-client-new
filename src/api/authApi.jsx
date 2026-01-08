@@ -1,8 +1,7 @@
 // api/authApi.js
-import axios from "axios";
-
+import api from "../api/axios";
 axios.defaults.withCredentials = true;
 
 export const checkAuth = () => {
-  return axios.get("/api/user/me");
+  return api.get("/api/user/me");
 };

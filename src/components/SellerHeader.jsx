@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link , useNavigate } from 'react-router-dom'
-import axios from 'axios';
+import api from "../api/axios";
 import {  useDispatch } from "react-redux";
 import { logout } from "../globalState/login/loginSlice";
 const SellerHeader = () => {
@@ -8,7 +8,7 @@ const SellerHeader = () => {
   const navigate = useNavigate();
     const handleLogout = async () => {
   try {
-    await axios.post("/api/user/logout", {}, { withCredentials: true });
+    await api.post("/api/user/logout", {}, { withCredentials: true });
   } catch (err) {
     console.error("Logout error", err);
   } finally {

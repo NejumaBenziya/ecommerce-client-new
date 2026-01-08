@@ -1,4 +1,4 @@
-import axios from 'axios';
+import api from "../api/axios";
 import React, { useEffect, useState } from 'react'
 import MainCarousal from '../components/MainCarousal';
 import AdminProductCard from '../components/AdminProductCard';
@@ -7,7 +7,7 @@ const AdminHomepage = () => {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
-    axios.get(
+    api.get(
   "/api/user/product-list",
   { withCredentials: true } // optional for public route
 )

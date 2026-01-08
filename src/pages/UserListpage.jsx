@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import UserCard from '../components/UserCard'
-import axios from 'axios';
+import api from "../api/axios";
 import { useLocation } from 'react-router-dom';
 
 const UserListpage = () => {
@@ -10,7 +10,7 @@ const UserListpage = () => {
       const role=params.get("role");
      
     useEffect(() => {
-   axios.get(
+   api.get(
   "/api/admin/user-list",
   {
     params: { role },

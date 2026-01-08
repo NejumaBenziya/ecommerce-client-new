@@ -1,4 +1,4 @@
-import axios from "axios";
+import api from "../api/axios";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -10,7 +10,7 @@ function ProductDetails({ product }) {
   const [showToast, setShowToast] = useState(false);
 
   useEffect(() => {
-    axios.get("/api/user/review-list", {
+    api.get("/api/user/review-list", {
   params: { productId: product._id },
 })
       .then((res) => {
@@ -39,7 +39,7 @@ function ProductDetails({ product }) {
         const token = localStorage.getItem("token");
         const productId = product._id;
 
-        const res = await axios.put(
+        const res = await api.put(
   "/api/user/addtocart",
   { productId: product._id },
   { withCredentials: true }

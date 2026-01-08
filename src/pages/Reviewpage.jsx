@@ -1,4 +1,4 @@
-import axios from "axios";
+import api from "../api/axios";
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -15,7 +15,7 @@ const Reviewpage = () => {
   const orderId= params.get("orderId");
   useEffect(() => {
   if (productId) {
-    axios
+    api
       .get("/api/user/product", {
         params: { productId },
       })
@@ -29,7 +29,7 @@ const Reviewpage = () => {
   e.preventDefault();
 
   try {
-    const res = await axios.post(
+    const res = await api.post(
       "/api/user/add-review",
       {
         product_id: product._id,

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import api from "../api/axios";
 
 const SaleListPage = () => {
   const [sales, setSales] = useState([]);
@@ -13,7 +13,7 @@ const SaleListPage = () => {
 
   const fetchSales = async () => {
   try {
-    const res = await axios.get("/api/admin/sale-list", {
+    const res = await api.get("/api/admin/sale-list", {
       withCredentials: true, // ✅ cookie auth
     });
     setSales(res.data.sales || []);
@@ -30,7 +30,7 @@ const SaleListPage = () => {
 
   setDeleting(saleId);
   try {
-    await axios.delete(`/api/admin/sales/${saleId}`, {
+    await api.delete(`/api/admin/sales/${saleId}`, {
       withCredentials: true, // ✅ cookie auth
     });
 

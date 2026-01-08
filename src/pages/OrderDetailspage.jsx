@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import OrderProductCard from "../components/OrderProductCard";
 import { useLocation } from "react-router-dom";
-import axios from "axios";
+import api from "../api/axios";
 
 const OrderDetailspage = () => {
   const [order, setOrder] = useState(null);
@@ -12,7 +12,7 @@ const OrderDetailspage = () => {
 
   useEffect(() => {
     if (orderId) {
-      axios.get(
+      api.get(
   "/api/seller/order-details",   // ✅ proxy-relative
   {
     params: { orderId },
@@ -30,8 +30,8 @@ const OrderDetailspage = () => {
     const status = event.target.value;
 
     try {
-      const res = await axios.put(
-        `${import.meta.env.VITE_API_DOMAIN}/api/seller/status-update`,
+      const res = await api.put(
+        "/api/seller/status-update",
         { orderId: order._id, status: status },
         {
           headers: {

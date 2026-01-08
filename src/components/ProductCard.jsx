@@ -1,4 +1,4 @@
-import axios from "axios";
+import api from "../api/axios";
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -25,8 +25,8 @@ const ProductCard = ({ product }) => {
       try {
         const token = localStorage.getItem("token");
 
-        const res = await axios.put(
-          `${import.meta.env.VITE_API_DOMAIN}/api/user/addtocart`,
+        const res = await api.put(
+          "/api/user/addtocart",
           { productId: product._id },
           { headers: { Authorization: `Bearer ${token}` }, withCredentials: true }
         );

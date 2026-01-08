@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom';
-import axios from 'axios';
+import api from "../api/axios";
 import ProductDetails from '../components/ProductDetails';
 
 function Productpage() {
@@ -15,7 +15,7 @@ console.log(productId)
 
   useEffect(() => {
     if (productId) {
-         axios.get("/api/user/product", {
+         api.get("/api/user/product", {
   params: { productId },
   withCredentials: true, // optional for public route
 })

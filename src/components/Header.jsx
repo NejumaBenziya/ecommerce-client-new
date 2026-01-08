@@ -2,7 +2,7 @@ import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { logout } from "../globalState/login/loginSlice";
-import axios from "axios";
+import api from "../api/axios";
 
 
 const Header = () => {
@@ -18,7 +18,7 @@ const Header = () => {
 
  const handleLogout = async () => {
   try {
-    await axios.post("/api/user/logout", {}, { withCredentials: true });
+    await api.post("/api/user/logout", {}, { withCredentials: true });
   } catch (err) {
     console.error("Logout error", err);
   } finally {

@@ -1,4 +1,4 @@
-import axios from "axios";
+import api from "../api/axios";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify"; // ✅ import toast
@@ -22,7 +22,7 @@ function Orderpage() {
   setLoading(true);
 
   try {
-    const res = await axios.post(
+    const res = await api.post(
       "/api/user/order",   // ✅ USE PROXY
       data,
       {

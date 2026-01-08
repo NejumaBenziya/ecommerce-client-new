@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import MainCarousal from '../components/MainCarousal'
 import OrderCard from '../components/OrderCard'
-import axios from 'axios'
-
+import api from "../api/axios";
 const SellerHomepage = () => {
   const [orders, setOrders] = useState([]);
   
   useEffect(() => {
     console.log("Fetching seller orders...");
-    axios.get(
+    api.get(
   "/api/seller/orders-list",
   {
     withCredentials: true, // ✅ cookie-based auth

@@ -1,4 +1,4 @@
-import axios from 'axios'
+import api from "../api/axios";
 import React from 'react'
 
 const UserCard = ({user}) => {
@@ -6,7 +6,7 @@ const UserCard = ({user}) => {
   const role = event.target.value;
 
   try {
-    const res = await axios.put(
+    const res = await api.put(
   "/api/admin/update-role",
   { _id: user._id, role },
   { withCredentials: true }

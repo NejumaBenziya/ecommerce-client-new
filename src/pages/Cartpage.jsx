@@ -1,6 +1,6 @@
 import CartCard from "../components/CartCard";
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import api from "../api/axios";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
@@ -16,7 +16,7 @@ const Cartpage = () => {
       return;
     }
 
-    axios
+    api
       .get("/api/user/cart-list", {
         withCredentials: true, // ✅ cookie auth only
       })
