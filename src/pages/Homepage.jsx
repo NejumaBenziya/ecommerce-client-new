@@ -1,13 +1,13 @@
 import MainCarousal from "../components/MainCarousal";
 import ProductCard from "../components/ProductCard";
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import api from "../api/axios";
 
 const Homepage = () => {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
-    axios.get("/api/user/product-list", { withCredentials: true })
+    api.get("/api/user/product-list", { withCredentials: true })
       .then((res) => {
         console.log("FULL RESPONSE:", res.data);
         const safeProducts = Array.isArray(res.data.products)
