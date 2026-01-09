@@ -22,7 +22,7 @@ const OrderDetailspage = () => {
         .then((res) => setOrder(res.data.order))
         .catch((err) => console.log(err));
     }
-  }, [orderId]);
+  }, [order.status]);
 
   if (!order) return <p className="text-center mt-10">Loading...</p>;
 
