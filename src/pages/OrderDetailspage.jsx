@@ -5,10 +5,16 @@ import api from "../api/axios";
 
 const OrderDetailspage = () => {
   const [order, setOrder] = useState(null);
-  const [status,setStatus]=useState(null);
+
   const location = useLocation();
   const params = new URLSearchParams(location.search);
   const orderId = params.get("orderId");
+  const fetchOrder = () => {
+  return api.get("/api/seller/order-details", {
+    params: { orderId },
+    withCredentials: true,
+  });
+};
 
   useEffect(() => {
     if (orderId) {
@@ -22,29 +28,27 @@ const OrderDetailspage = () => {
         .then((res) => setOrder(res.data.order))
         .catch((err) => console.log(err));
     }
-  }, [status]);
+  }, [orderId]);
 
   if (!order) return <p className="text-center mt-10">Loading...</p>;
 
   const clickHandler = async (event) => {
-    setStatus = event.target.value;
+    const status = event.target.value;
 
-    try {
-      const res = await api.put(
-        "/api/seller/status-update",
-        { orderId: order._id, status: status },
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-          withCredentials: true,
-        }
-      );
+  try {
+    await api.put(
+      "/api/seller/status-update",
+      { orderId: order._id, status },
+      { withCredentials: true }
+    );
 
-      console.log("Status updated:", res.data);
-    } catch (err) {
-      console.error("Error updating status:", err.response?.data || err.message);
-    }
+    // ✅ REFRESH ORDER DATA
+    const res = await fetchOrder();
+    setOrder(res.data.order);
+
+  } catch (err) {
+    console.error(err.response?.data || err.message);
+  }
   };
 
   return (
