@@ -32,7 +32,16 @@ const Login = () => {
             user: res.data.user,
             role: res.data.user.role,
           }))
-          navigate("/");
+          const role = res.data.user.role;
+
+if (role === "seller") {
+  navigate("/seller/homepage");
+} else if (role === "admin") {
+  navigate("/admin/homepage");
+} else {
+  navigate("/");
+}
+
         
       })
       .catch((err) => {
