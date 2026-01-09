@@ -14,7 +14,7 @@ const Login = () => {
     password: "",
   });
   useEffect(() => {
-  dispatch(logout()); // 🔥 clear old user state
+  //dispatch(logout()); // 🔥 clear old user state
 }, []);
   const submitHandler = (event) => {
     event.preventDefault();
@@ -26,23 +26,14 @@ const Login = () => {
         { withCredentials: true }
       )
       .then((res) => {
-        dispatch(logout());
+        //dispatch(logout());
         dispatch(
           setAuthUser({
             user: res.data.user,
             role: res.data.user.role,
-          })
-        );
-
-       // dispatch(setCartLength(res.data.user.cartLength || 0));
-
-        if (res.data.user.role === "admin") {
-          navigate("/admin/homepage");
-        } else if (res.data.user.role === "seller") {
-          navigate("/seller/homepage");
-        } else {
+          }))
           navigate("/");
-        }
+        
       })
       .catch((err) => {
         setError(err.response?.data?.message || "Something went wrong");

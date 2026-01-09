@@ -16,16 +16,14 @@ const UserLayout = () => {
           setAuthUser({
             user: res.data.user,
             role: res.data.user.role,
-            cartLength: res.data.cartLength,
+            
           })
         );
       })
       .catch(() => {
-        dispatch(logout());
-      })
-      .finally(() => {
-        dispatch(authFinished()); // ✅ ALWAYS CALLED
-      });
+  dispatch(authFinished()); // just mark auth check done
+})
+
   }, [dispatch]);
 
   return (
