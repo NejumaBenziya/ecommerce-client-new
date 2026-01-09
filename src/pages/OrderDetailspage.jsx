@@ -5,7 +5,7 @@ import api from "../api/axios";
 
 const OrderDetailspage = () => {
   const [order, setOrder] = useState(null);
-
+  const [status,setStatus]=useState(null);
   const location = useLocation();
   const params = new URLSearchParams(location.search);
   const orderId = params.get("orderId");
@@ -22,12 +22,12 @@ const OrderDetailspage = () => {
         .then((res) => setOrder(res.data.order))
         .catch((err) => console.log(err));
     }
-  }, [order.status]);
+  }, [status]);
 
   if (!order) return <p className="text-center mt-10">Loading...</p>;
 
   const clickHandler = async (event) => {
-    const status = event.target.value;
+    setStatus = event.target.value;
 
     try {
       const res = await api.put(
