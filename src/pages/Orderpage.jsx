@@ -79,6 +79,7 @@ function Orderpage() {
       );
 
       const razorpayOrder = orderRes.data;
+      console.log("Razorpay Key:", import.meta.env.VITE_RAZORPAY_KEY_ID);
 
       // 2️⃣ Razorpay options
       const options = {
