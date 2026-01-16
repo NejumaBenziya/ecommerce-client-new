@@ -129,7 +129,7 @@ const ProductCard = ({ product }) => {
   {/* Toast Notification */}
   {showToast && (
     <div className="fixed top-5 right-5 bg-green-600 text-white px-5 py-3 rounded-lg shadow-lg animate-fade-in-out">
-      ✅ Product added to cart.
+      ✅ Product added to cart
     </div>
   )}
 </div>
