@@ -29,9 +29,14 @@ const Cartpage = () => {
       });
   }, [user]); // ✅ REFRESH WHEN USER CHANGES
 
-  const clickHandler = () => {
-    navigate("/order");
-  };
+ const clickHandler = () => {
+  navigate("/order", {
+    state: {
+      amount: discountedTotal,
+    },
+  });
+};
+
 
   // 🧮 Totals
   const originalTotal = products.reduce(
