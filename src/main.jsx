@@ -27,7 +27,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import CreateSalepage from './pages/CreateSalepage'
 import SaleListPage from './pages/SaleListpage'
-import SearchPage from './pages/searchPage'
+import SearchPage from './pages/SearchPage'
 
 const router=createBrowserRouter([
   {
