@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { logout } from "../globalState/login/loginSlice";
@@ -8,36 +8,39 @@ import api from "../api/axios";
 const Header = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
+  const [query, setQuery] = useState("");
   const { isLoggedIn, cartLength, authChecked } = useSelector(
     (state) => state.auth
   );
 
   // ⛔ wait until auth check finishes
   if (!authChecked) return null;
+  const handleSearch = async () => {
 
- const handleLogout = async () => {
-  try {
-    await api.post("/api/user/logout", {}, { withCredentials: true });
-  } catch (err) {
-    console.error("Logout error", err);
-  } finally {
-    dispatch(logout());
-    navigate("/login");
+    navigate(`/search?q=${query}`);
   }
-};
+  const handleLogout = async () => {
+    try {
+      await api.post("/api/user/logout", {}, { withCredentials: true });
+    } catch (err) {
+      console.error("Logout error", err);
+    } finally {
+      dispatch(logout());
+      navigate("/login");
+    }
+  };
   return (
     <div className="navbar bg-base-100 shadow-sm">
       {/* LEFT */}
       <div className="flex-1">
-        
-        <div className= " dropdown">
-         
+
+        <div className=" dropdown">
+
           <div
             tabIndex={0}
             role="button"
             className="btn btn-ghost btn-circle"
-           
+
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -55,15 +58,15 @@ const Header = () => {
             </svg>
           </div>
 
-         
+
           <ul
             tabIndex={0}
             className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
           >
             <li>
               <Link to="/" onClick={() => {
-  document.activeElement.blur();
-}}>
+                document.activeElement.blur();
+              }}>
                 Homepage
               </Link>
             </li>
@@ -74,25 +77,25 @@ const Header = () => {
             </li>
             <li>
               <Link to="/product-list?category=makeup" onClick={() => {
-  
-  document.activeElement.blur();
-}} >
+
+                document.activeElement.blur();
+              }} >
                 Makeup
               </Link>
             </li>
             <li>
               <Link to="/product-list?category=skin" onClick={() => {
-  
-  document.activeElement.blur();
-}}>
+
+                document.activeElement.blur();
+              }}>
                 Skin-care
               </Link>
             </li>
             <li>
               <Link to="/product-list?category=hair" onClick={() => {
-  
-  document.activeElement.blur();
-}}>
+
+                document.activeElement.blur();
+              }}>
                 Hair-care
               </Link>
             </li>
@@ -100,32 +103,32 @@ const Header = () => {
               <Link
                 to="/product-list?category=bath and body"
                 onClick={() => {
-  
-  document.activeElement.blur();
-}}
+
+                  document.activeElement.blur();
+                }}
               >
                 Bath and Body
               </Link>
             </li>
-              {isLoggedIn ? (<ul><li>
+            {isLoggedIn ? (<ul><li>
               <b><Link
                 to="/user-orders"
                 onClick={() => {
-  
-  document.activeElement.blur();
-}}
+
+                  document.activeElement.blur();
+                }}
               >
                 My Orders
               </Link></b>
             </li>
-          <li>
-                  <button
-                    onClick={handleLogout}
-                    className="text-red-600 font-semibold"
-                  >
-                    Logout
-                  </button>
-                </li></ul>):" "}
+              <li>
+                <button
+                  onClick={handleLogout}
+                  className="text-red-600 font-semibold"
+                >
+                  Logout
+                </button>
+              </li></ul>) : " "}
           </ul>
         </div>
 
@@ -136,34 +139,38 @@ const Header = () => {
 
       {/* RIGHT */}
       <div className="flex-none">
+        <input type="text" placeholder="Search" className="input input-bordered w-24 md:w-auto" value={query} onChange={(e) => setQuery(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") handleSearch();
+          }} />
         {isLoggedIn ? (
           <ul className="menu menu-horizontal px-1">
             {/* CART */}
             <li>
-             <button
-  className="btn btn-ghost btn-circle indicator"
-  onClick={() => navigate("/cart-list")}
->
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    className="h-5 w-5"
-    fill="none"
-    viewBox="0 0 24 24"
-    stroke="currentColor"
-  >
-    <path
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      strokeWidth="2"
-      d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5
+              <button
+                className="btn btn-ghost btn-circle indicator"
+                onClick={() => navigate("/cart-list")}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-5 w-5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5
       M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17
       m0 0a2 2 0 100 4
       m-8 2a2 2 0 11-4 0"
-    />
-  </svg>
+                  />
+                </svg>
 
-  
-</button>
+
+              </button>
 
             </li>
 
@@ -175,9 +182,9 @@ const Header = () => {
                 </div>
               </div>
 
-              
-                
-             </li>
+
+
+            </li>
           </ul>
         ) : (
           <ul className="menu menu-horizontal px-1">

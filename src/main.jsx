@@ -27,6 +27,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import CreateSalepage from './pages/CreateSalepage'
 import SaleListPage from './pages/SaleListpage'
+import SearchPage from './pages/searchPage'
 
 const router=createBrowserRouter([
   {
@@ -51,7 +52,13 @@ const router=createBrowserRouter([
   path:"/product-list",
   element:<Categoriespage/>,
   children:[]
-},{
+},
+{
+  path:"/search",
+  element:<SearchPage/>,
+  children:[]
+},
+{
   path:"/cart-list",
   element:<Cartpage/>,
   children:[]

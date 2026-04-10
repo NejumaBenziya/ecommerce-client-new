@@ -56,7 +56,8 @@ function Orderpage() {
           },
           { withCredentials: true }
         );
-
+        console.log(res);
+        
         toast.success("✅ Order placed (Cash on Delivery)");
         navigate("/user-orders");
         return;
@@ -117,6 +118,7 @@ function Orderpage() {
       rzp.open();
     } catch (err) {
       console.error(err);
+      console.error("ORDER ERROR:", err.response?.data || err.message);
       toast.error("❌ Payment failed or cancelled");
     } finally {
       setLoading(false);
