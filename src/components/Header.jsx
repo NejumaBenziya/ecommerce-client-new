@@ -16,7 +16,9 @@ const Header = () => {
   // ⛔ wait until auth check finishes
   if (!authChecked) return null;
   const handleSearch = async () => {
-
+     if (query.trim() === "") {
+           return;
+        }
     navigate(`/search?q=${query}`);
   }
   const handleLogout = async () => {
