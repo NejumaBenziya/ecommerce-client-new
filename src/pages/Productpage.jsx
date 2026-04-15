@@ -5,7 +5,7 @@ import ProductDetails from '../components/ProductDetails';
 
 function Productpage() {
     const [product, setProduct] = useState([]);
-         
+    
          const location = useLocation();
       const params = new URLSearchParams(location.search);
      const productId=params.get("productId");
@@ -15,12 +15,16 @@ console.log(productId)
 
   useEffect(() => {
     if (productId) {
+      
          api.get("/api/user/product", {
   params: { productId },
   withCredentials: true, // optional for public route
 })
       
-        .then(res => setProduct(res.data.product))
+        .then((res) => {
+          setProduct(res.data.product)
+          
+        })
         .catch(err => console.log(err));
     }
   }, [productId]);

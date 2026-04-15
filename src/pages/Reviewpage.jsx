@@ -2,10 +2,13 @@ import api from "../api/axios";
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import Loader from "../components/Loader";
+
 
 const Reviewpage = () => {
   const [product, setProduct] = useState({});
   const [feedback, setFeedback] = useState("");
+  const [loading, setLoading] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -19,8 +22,12 @@ const Reviewpage = () => {
       .get("/api/user/product", {
         params: { productId },
       })
-      .then((res) => setProduct(res.data.product))
-      .catch((err) => console.log(err));
+      .then((res) => {
+         setLoading(false)
+        setProduct(res.data.product)})
+      .catch((err) =>{
+         setLoading(false)
+        console.log(err)});
   }
 }, [productId]);
 
@@ -57,6 +64,7 @@ const Reviewpage = () => {
 
   return (
     <div className="max-w-xs mx-auto bg-white shadow-lg rounded-2xl overflow-hidden transition transform hover:scale-105 hover:shadow-xl">
+      {loading && <Loader />}
       <figure className="w-full h-48 overflow-hidden">
         <img
           src={product.productImage}

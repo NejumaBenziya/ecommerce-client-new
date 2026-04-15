@@ -42,23 +42,29 @@ function Orderpage() {
   const submitHandler = async (event) => {
     event.preventDefault();
     setLoading(true);
-
+    if (!amount || amount <= 0) {
+      toast.error("Invalid amount");
+      setLoading(false); // important
+      return;
+    }
     try {
       // =========================
       // ✅ CASH ON DELIVERY
       // =========================
       if (data.paymentMethod === "Cash on Delivery") {
-        await api.post(
+        const res = await api.post(
           "/api/user/order",
           {
             ...data,
+            amount,
             paymentMethod: "Cash on Delivery",
           },
           { withCredentials: true }
         );
+
         console.log(res);
-        
         toast.success("✅ Order placed (Cash on Delivery)");
+        setLoading(false);
         navigate("/user-orders");
         return;
       }
@@ -92,6 +98,14 @@ function Orderpage() {
         order_id: razorpayOrder.id,
         name: "My E-Commerce Store",
         description: "Order Payment",
+        prefill: {
+          name: data.houseName,
+        },
+        modal: {
+          ondismiss: function () {
+            toast.error("Payment cancelled");
+          },
+        },
 
         handler: async function (response) {
           // 3️⃣ Place order WITH payment details

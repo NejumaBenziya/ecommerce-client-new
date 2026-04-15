@@ -3,9 +3,12 @@ import React, { useEffect, useState } from "react";
 import api from "../api/axios";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { TailSpin } from "react-loader-spinner";
+import Loader from "../components/Loader";
 
 const Cartpage = () => {
   const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const user = useSelector((state) => state.auth.user);
@@ -15,15 +18,17 @@ const Cartpage = () => {
       setProducts([]); // 🔥 clear cart on user change
       return;
     }
-
+    setLoading(true);
     api
       .get("/api/user/cart-list", {
         withCredentials: true, // ✅ cookie auth only
       })
       .then((res) => {
         setProducts(res.data.products || []);
+        setLoading(false)
       })
       .catch((err) => {
+        setLoading(false)
         console.error("Error fetching cart:", err.response || err.message);
         setProducts([]);
       });
@@ -53,6 +58,10 @@ const Cartpage = () => {
 
   return (
     <div className="container m-auto px-4">
+      {loading?(
+            <Loader/>
+             ) :(
+              <>
       <h1 className="text-2xl font-bold text-center mb-3">Your Cart</h1>
 
       {products.length === 0 ? (
@@ -100,7 +109,9 @@ const Cartpage = () => {
           </button>
         </>
       )}
+     </> )}
     </div>
+             
   );
 };
 
