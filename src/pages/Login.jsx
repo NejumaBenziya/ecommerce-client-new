@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux";
 import { useNavigate, Link } from "react-router-dom";
 import { logout, setAuthUser } from "../globalState/login/loginSlice";
 import { useEffect } from "react";
+
 const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -13,36 +14,35 @@ const Login = () => {
     email: "",
     password: "",
   });
-  useEffect(() => {
-  //dispatch(logout()); // 🔥 clear old user state
-}, []);
+
   const submitHandler = (event) => {
     event.preventDefault();
 
     api
       .post(
-        "/api/user/login",   // ✅ USE PROXY
+        "/api/user/login",
         data,
         { withCredentials: true }
       )
-      .then((res) => {
-        //dispatch(logout());
+      .then(async (res) => {
+
         dispatch(
           setAuthUser({
             user: res.data.user,
             role: res.data.user.role,
-          }))
-          const role = res.data.user.role;
 
-if (role === "seller") {
-  navigate("/seller/homepage");
-} else if (role === "admin") {
-  navigate("/admin/homepage");
-} else {
-  navigate("/");
-}
+          })
+        );
+        const role = res.data.user.role;
 
-        
+        if (role === "seller") {
+          navigate("/seller/homepage");
+        } else if (role === "admin") {
+          navigate("/admin/homepage");
+        } else {
+          navigate("/");
+          window.location.reload();
+        }
       })
       .catch((err) => {
         setError(err.response?.data?.message || "Something went wrong");

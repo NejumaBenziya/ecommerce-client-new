@@ -22,6 +22,7 @@ const prevClickHandler = () => {
   setPage((prev) => prev - 1);
 };
   useEffect(() => {
+    
     setLoading(true);
     api.get("/api/user/product-list", {
       params: { page: page, limit: 8 },
@@ -30,7 +31,7 @@ const prevClickHandler = () => {
       .then((res) => {
         console.log("FULL RESPONSE:", res.data);
         
-        console.log(loading);
+        
         
 
         const safeProducts = Array.isArray(res.data.products)

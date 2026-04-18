@@ -3,9 +3,9 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   isLoggedIn: false,
   role: null,
-  
+  cartLength:0,
   user: null,
-  authChecked: false, // ✅ IMPORTANT
+  authChecked: false,
 };
 
 const authSlice = createSlice({
@@ -15,21 +15,22 @@ const authSlice = createSlice({
     setAuthUser: (state, action) => {
       state.user = action.payload.user;
       state.role = action.payload.role;
+      state.cartLength=action.payload.cartLength||0;
       state.isLoggedIn = true;
       
-      state.authChecked = true; // ✅ mark done
+      state.authChecked = true; 
     },
 
     logout: (state) => {
       state.isLoggedIn = false;
       state.role = null;
-     
+      
       state.user = null;
-      state.authChecked = true; // ✅ still checked
+      state.authChecked = true; 
     },
 
     authFinished: (state) => {
-      state.authChecked = true; // ✅ for failed auth
+      state.authChecked = true; //  for failed auth
     },
   },
 });

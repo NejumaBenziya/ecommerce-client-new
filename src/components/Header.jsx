@@ -12,8 +12,14 @@ const Header = () => {
   const { isLoggedIn, cartLength, authChecked } = useSelector(
     (state) => state.auth
   );
+ 
 
-  // ⛔ wait until auth check finishes
+  console.log(isLoggedIn);
+  
+  
+ 
+  
+  //  wait until auth check finishes
   if (!authChecked) return null;
   const handleSearch = async () => {
      if (query.trim() === "") {
@@ -149,31 +155,19 @@ const Header = () => {
           <ul className="menu menu-horizontal px-1">
             {/* CART */}
             <li>
-              <button
-                className="btn btn-ghost btn-circle indicator"
-                onClick={() => navigate("/cart-list")}
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-5 w-5"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5
-      M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17
-      m0 0a2 2 0 100 4
-      m-8 2a2 2 0 11-4 0"
-                  />
-                </svg>
+                  <div
+      onClick={() => navigate("/cart-list")}
+      className="relative cursor-pointer"
+    >
+      🛒
 
-
-              </button>
-
+       {cartLength > 0 && (
+        <span className="absolute -top-2 -right-2 bg-yellow-400 text-black text-xs px-2 rounded-full font-bold">
+          {cartLength}
+        </span>
+        )}
+    </div>
+              
             </li>
 
             {/* PROFILE */}
@@ -200,4 +194,4 @@ const Header = () => {
   );
 };
 
-export default Header; // ✅ THIS FIXES YOUR ERROR
+export default Header;

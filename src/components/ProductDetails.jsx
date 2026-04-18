@@ -11,8 +11,8 @@ function ProductDetails({ product }) {
 
   useEffect(() => {
     api.get("/api/user/review-list", {
-  params: { productId: product._id },
-})
+      params: { productId: product._id },
+    })
       .then((res) => {
         setReviews(res.data.reviews || []);
         console.log("Fetched reviews:", res.data.reviews);
@@ -40,15 +40,16 @@ function ProductDetails({ product }) {
         const productId = product._id;
 
         const res = await api.put(
-  "/api/user/addtocart",
-  { productId: product._id },
-  { withCredentials: true }
-);
-
-
+          "/api/user/addtocart",
+          { productId: product._id },
+          { withCredentials: true }
+        );
         console.log(res.data);
         setShowToast(true);
-        setTimeout(() => setShowToast(false), 2000);
+        setTimeout(() => {
+          setShowToast(false);
+          window.location.reload();// reload after toast
+        }, 2000);
       } catch (err) {
         console.log(err.response?.data || err.message);
       }
@@ -78,23 +79,23 @@ function ProductDetails({ product }) {
             Only {product.quantity} left!
           </p>
           {/* Price Section */}
-<div className="mt-2">
-  {product.salePrice ? (
-    <div className="flex items-center gap-2">
-      <p className="text-lg font-bold text-red-600">
-        ₹ {product.salePrice}
-      </p>
-      <p className="text-sm text-gray-500 line-through">
-        ₹ {product.price}
-      </p>
-      <span className="text-xs bg-red-100 text-red-600 font-semibold px-2 py-0.5 rounded-full">
-        {Math.round(((product.price - product.salePrice) / product.price) * 100)}% OFF
-      </span>
-    </div>
-  ) : (
-    <p className="text-lg font-bold text-green-600">₹ {product.price}</p>
-  )}
-</div>
+          <div className="mt-2">
+            {product.salePrice ? (
+              <div className="flex items-center gap-2">
+                <p className="text-lg font-bold text-red-600">
+                  ₹ {product.salePrice}
+                </p>
+                <p className="text-sm text-gray-500 line-through">
+                  ₹ {product.price}
+                </p>
+                <span className="text-xs bg-red-100 text-red-600 font-semibold px-2 py-0.5 rounded-full">
+                  {Math.round(((product.price - product.salePrice) / product.price) * 100)}% OFF
+                </span>
+              </div>
+            ) : (
+              <p className="text-lg font-bold text-green-600">₹ {product.price}</p>
+            )}
+          </div>
 
 
           {/* Average Rating */}
@@ -123,64 +124,64 @@ function ProductDetails({ product }) {
             </button>
           </div>
 
-         {/* Reviews Section */}
-<div className="reviews mt-6">
-  <h3 className="text-lg font-semibold text-gray-800 mb-3">
-    Customer Reviews
-  </h3>
-  {reviews.length === 0 ? (
-    <p className="text-gray-500 text-center">No reviews yet.</p>
-  ) : (
-    // 🔽 sort by createdAt descending
-    [...reviews]
-      .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
-      .map((review, index) => (
-        <div
-          key={index}
-          className="border rounded-lg p-4 mb-4 shadow-sm bg-gray-50"
-        >
-          {/* 👤 Username + Date */}
-          <div className="flex justify-between items-center mb-2">
-            {review.review_by && review.review_by.name && (
-              <p className="font-semibold text-gray-800">
-                {review.review_by.name}
-              </p>
-            )}
-            {review.createdAt && (
-              <p className="text-xs text-gray-500">
-                {new Date(review.createdAt).toLocaleDateString("en-US", {
-                  year: "numeric",
-                  month: "short",
-                  day: "numeric",
-                })}
-              </p>
+          {/* Reviews Section */}
+          <div className="reviews mt-6">
+            <h3 className="text-lg font-semibold text-gray-800 mb-3">
+              Customer Reviews
+            </h3>
+            {reviews.length === 0 ? (
+              <p className="text-gray-500 text-center">No reviews yet.</p>
+            ) : (
+              // 🔽 sort by createdAt descending
+              [...reviews]
+                .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+                .map((review, index) => (
+                  <div
+                    key={index}
+                    className="border rounded-lg p-4 mb-4 shadow-sm bg-gray-50"
+                  >
+                    {/* 👤 Username + Date */}
+                    <div className="flex justify-between items-center mb-2">
+                      {review.review_by && review.review_by.name && (
+                        <p className="font-semibold text-gray-800">
+                          {review.review_by.name}
+                        </p>
+                      )}
+                      {review.createdAt && (
+                        <p className="text-xs text-gray-500">
+                          {new Date(review.createdAt).toLocaleDateString("en-US", {
+                            year: "numeric",
+                            month: "short",
+                            day: "numeric",
+                          })}
+                        </p>
+                      )}
+                    </div>
+
+                    {/* ⭐ Rating */}
+                    {review.rating && review.rating > 0 && (
+                      <div className="rating rating-sm mb-2">
+                        {[1, 2, 3, 4, 5].map((star) => (
+                          <input
+                            key={star}
+                            type="radio"
+                            name={`review-rating-${index}`}
+                            className="mask mask-star-2 bg-orange-400"
+                            checked={Math.round(review.rating) === star}
+                            readOnly
+                          />
+                        ))}
+                      </div>
+                    )}
+
+                    {/* 📝 Feedback */}
+                    {review.feedback && review.feedback.trim() !== "" && (
+                      <p className="text-gray-700 italic">“{review.feedback}”</p>
+                    )}
+                  </div>
+                ))
             )}
           </div>
-
-          {/* ⭐ Rating */}
-          {review.rating && review.rating > 0 && (
-            <div className="rating rating-sm mb-2">
-              {[1, 2, 3, 4, 5].map((star) => (
-                <input
-                  key={star}
-                  type="radio"
-                  name={`review-rating-${index}`}
-                  className="mask mask-star-2 bg-orange-400"
-                  checked={Math.round(review.rating) === star}
-                  readOnly
-                />
-              ))}
-            </div>
-          )}
-
-          {/* 📝 Feedback */}
-          {review.feedback && review.feedback.trim() !== "" && (
-            <p className="text-gray-700 italic">“{review.feedback}”</p>
-          )}
-        </div>
-      ))
-  )}
-</div>
 
         </div>
       </div>

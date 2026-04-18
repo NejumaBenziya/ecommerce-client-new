@@ -6,6 +6,7 @@ import Footer from "../components/Footer";
 import { checkAuth } from "../api/authApi";
 import { setAuthUser, logout, authFinished } from "../globalState/login/loginSlice";
 
+
 const UserLayout = () => {
   const dispatch = useDispatch();
 
@@ -16,13 +17,14 @@ const UserLayout = () => {
           setAuthUser({
             user: res.data.user,
             role: res.data.user.role,
-            
+
+            cartLength: res.data.cartLength
           })
         );
       })
       .catch(() => {
-  dispatch(authFinished()); // just mark auth check done
-})
+        dispatch(authFinished()); // just mark auth check done
+      })
 
   }, [dispatch]);
 
