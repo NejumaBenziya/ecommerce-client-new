@@ -1,6 +1,6 @@
 import api from "../api/axios";
 import React from 'react'
-
+import { toast } from "react-toastify";
 
 const CartCard = ({ product }) => {
   const clickHandler = async (event) => {
