@@ -2,13 +2,24 @@ import api from "../api/axios";
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setWishlist } from "../globalState/login/loginSlice";
+
 
 const ProductCard = ({ product }) => {
   const navigate = useNavigate();
-  const isLoggedin = useSelector((state) => state.auth.isLoggedIn);
+  const dispatch = useDispatch()
+  const { isLoggedIn, wishlist } = useSelector(
+    (state) => state.auth
+  );
 
   const [showToast, setShowToast] = useState(false);
 
+
+  const wishlistIds = Array.isArray(wishlist)
+    ? wishlist.map((id) => id.toString())
+    : [];
+  const isInWishlist = wishlistIds.includes(product._id.toString());
   const sum = Array.isArray(product.rating)
     ? product.rating.reduce((acc, num) => acc + num, 0)
     : 0;
@@ -16,23 +27,61 @@ const ProductCard = ({ product }) => {
     Array.isArray(product.rating) && product.rating.length > 0
       ? sum / product.rating.length
       : 0;
+  //  wishlist handler
+  const wishlistHandler = async (event) => {
+    event.stopPropagation();
+    event.preventDefault();
+    console.log(isInWishlist);
+
+    if (!isLoggedIn) {
+      navigate("/login");
+      return;
+    }
+
+    try {
+      const token = localStorage.getItem("token");
+
+      const url = isInWishlist
+        ? "/api/user/removewishlist"
+        : "/api/user/addtowishlist";
+
+      const res = await api.put(
+        url,
+        { productId: product._id },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+          withCredentials: true,
+        }
+      );
+      console.log(res.data.wishlist);
+
+      dispatch(setWishlist({ wishlist: res.data.wishlist }));
+    } catch (err) {
+      console.log(err.response?.data || err.message);
+    }
+  };
 
   const clickHandler = async (event) => {
     event.stopPropagation();
     event.preventDefault();
 
-    if (isLoggedin) {
+    if (isLoggedIn) {
       try {
         const token = localStorage.getItem("token");
 
-        const res = await api.put(
+        const res1 = await api.put(
           "/api/user/addtocart",
           { productId: product._id },
-          { headers: { Authorization: `Bearer ${token}` }, withCredentials: true }
+          { withCredentials: true }
         );
-
-        console.log(res.data);
-
+        const res2 = await api.put(
+          "/api/user/removewishlist",
+          { productId: product._id },
+          {
+            headers: { Authorization: `Bearer ${token}` },
+            withCredentials: true,
+          }
+        );
 
         setShowToast(true);
         setTimeout(() => {
@@ -56,6 +105,23 @@ const ProductCard = ({ product }) => {
 
   return (
     <div className="relative">
+      {/*  Wishlist Button */}
+      {isLoggedIn && (<button
+        onClick={wishlistHandler}
+        className="absolute top-3 right-3 z-20 
+        w-10 h-10 flex items-center justify-center 
+        rounded-full bg-white/80 backdrop-blur-md 
+        shadow-md transition-all duration-300 
+        hover:scale-110 active:scale-95"
+      >
+        <span
+          className={`text-xl ${isInWishlist ? "text-red-500 scale-110" : "text-gray-400"
+            }`}
+        >
+          {isInWishlist ? "❤" : "♡"}
+        </span>
+      </button>)}
+
       {/* Card */}
       <div
         className="card bg-white shadow-md hover:shadow-xl transition duration-300 rounded-2xl overflow-hidden cursor-pointer h-full"

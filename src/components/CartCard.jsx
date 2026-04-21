@@ -28,7 +28,10 @@ const CartCard = ({ product }) => {
   const plusHandler = async (event) => {
     try {
       const token = localStorage.getItem("token");
-
+       if (product.quantity >= product.stock) {
+      toast.error("Out of stock");
+      return;
+    }
       const res = await api.put(
         "/api/user/addtocart",
         { productId: product._id },

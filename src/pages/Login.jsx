@@ -2,7 +2,7 @@ import api from "../api/axios";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate, Link } from "react-router-dom";
-import { logout, setAuthUser } from "../globalState/login/loginSlice";
+import { logout, setAuthUser,setWishlist } from "../globalState/login/loginSlice";
 import { useEffect } from "react";
 
 const Login = () => {
@@ -30,7 +30,13 @@ const Login = () => {
           setAuthUser({
             user: res.data.user,
             role: res.data.user.role,
-
+            
+          })
+        );
+         dispatch(
+          setWishlist({
+           wishlist : res.data.user.wishlist
+            
           })
         );
         const role = res.data.user.role;

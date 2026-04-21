@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client'
 import Homepage from './pages/Homepage'
 import Login from './pages/Login'
 import Cartpage from './pages/Cartpage'
+import Wishlistpage from './pages/Wishlistpage'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import {store} from './globalState/store'
 import "./styles/global.css"
@@ -62,7 +63,13 @@ const router=createBrowserRouter([
   path:"/cart-list",
   element:<Cartpage/>,
   children:[]
-},{
+},
+{
+  path:"/wishlist",
+  element:<Wishlistpage/>,
+  children:[]
+},
+{
   path:"/product",
   element:<Productpage/>,
   children:[]

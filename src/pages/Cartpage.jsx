@@ -21,7 +21,7 @@ const Cartpage = () => {
     setLoading(true);
     api
       .get("/api/user/cart-list", {
-        withCredentials: true, // ✅ cookie auth only
+        withCredentials: true,
       })
       .then((res) => {
         setProducts(res.data.products || []);

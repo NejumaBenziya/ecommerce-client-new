@@ -169,7 +169,16 @@ const Header = () => {
     </div>
               
             </li>
+<li>
+  <div
+    onClick={() => navigate("/wishlist")}
+    className="relative cursor-pointer text-xl"
+  >
+    ❤️
 
+   
+  </div>
+</li>
             {/* PROFILE */}
             <li className="dropdown dropdown-end">
               <div tabIndex={0} className="btn btn-ghost btn-circle avatar">

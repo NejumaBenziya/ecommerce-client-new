@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import { checkAuth } from "../api/authApi";
-import { setAuthUser, logout, authFinished } from "../globalState/login/loginSlice";
+import { setAuthUser, logout, authFinished, setWishlist } from "../globalState/login/loginSlice";
 
 
 const UserLayout = () => {
@@ -18,7 +18,14 @@ const UserLayout = () => {
             user: res.data.user,
             role: res.data.user.role,
 
-            cartLength: res.data.cartLength
+            cartLength: res.data.cartLength,
+
+          })
+        );
+        dispatch(
+          setWishlist({
+            wishlist: res.data.user.wishlist
+
           })
         );
       })
