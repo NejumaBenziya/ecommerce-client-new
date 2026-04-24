@@ -2,9 +2,12 @@ import api from "../api/axios";
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { useDispatch } from "react-redux";
+import { setCartLength} from "../globalState/login/loginSlice";
 
 function Orderpage() {
 
+  const dispatch = useDispatch();
   // State to store shipping address + selected payment method
   const [data, setData] = useState({
     houseName: "",
@@ -90,9 +93,10 @@ function Orderpage() {
 
         // stop loading
         setLoading(false);
-
+        
         // redirect to orders page
         navigate("/user-orders");
+        dispatch(setCartLength(0));
 
         return; // stop further execution
       }
@@ -167,10 +171,10 @@ function Orderpage() {
 
             // success message
             toast.success("💳 Payment successful & order placed!");
-
+            
             // redirect
             navigate("/user-orders");
-
+            dispatch(setCartLength(0));
           } catch (err) {
 
             // very important case:

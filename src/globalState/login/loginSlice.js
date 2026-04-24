@@ -38,7 +38,9 @@ const authSlice = createSlice({
     setWishlist: (state, action) => {
       state.wishlist = action.payload.wishlist;
     },
-
+     setCartLength: (state, action) => {
+    state.cartLength = action.payload; 
+  },
     //  Logout user
     logout: (state) => {
 
@@ -61,7 +63,7 @@ const authSlice = createSlice({
 });
 
 // Export actions
-export const { setAuthUser, setWishlist, logout, authFinished } = authSlice.actions;
+export const { setAuthUser, setWishlist,setCartLength, logout, authFinished } = authSlice.actions;
 
 //  Export reducer
 export default authSlice.reducer;
