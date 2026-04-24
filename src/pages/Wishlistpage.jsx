@@ -5,53 +5,73 @@ import api from "../api/axios";
 import { setWishlist } from "../globalState/login/loginSlice";
 
 const Wishlist = () => {
+
+  // local state to store full product details
   const [products, setProducts] = useState([]);
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  //  get wishlist IDs/data from Redux store
   const wishlist = useSelector((state) => state.auth.wishlist || []);
+
+  // fetch wishlist products when wishlist changes
   useEffect(() => {
+
+    //  only call API if wishlist has items
     if (wishlist.length > 0) {
+
       api
         .get("/api/user/wishlist", {
-          withCredentials: true,
+          withCredentials: true, //  cookie auth
         })
         .then((res) => {
-          setProducts(res.data ||[]);
-          console.log(products);
 
+          // store products
+          setProducts(res.data || []);
+
+          
         })
-        .catch((err) => console.log(err));
+        .catch((err) => console.log(err)); 
     }
-  }, [wishlist]);
-  //  Remove from wishlist
+  }, [wishlist]); //  runs when wishlist updates
+
+  //  remove product from wishlist
   const removeHandler = async (productId) => {
     try {
+
       const res = await api.put(
         "/api/user/removewishlist",
         { productId },
         { withCredentials: true }
       );
 
+      //  update Redux wishlist after removal
       dispatch(setWishlist(res.data.wishlist));
+
     } catch (err) {
+
+     
       console.log(err.response?.data || err.message);
     }
   };
 
   return (
     <div className="container mx-auto px-4 py-6">
-      {/* Title */}
+
+      {/*  Title */}
       <h1 className="text-3xl font-bold mb-6 text-center">
         ❤️ My Wishlist
       </h1>
 
-      {/* Empty State */}
+      {/*  Empty State */}
       {wishlist.length === 0 ? (
         <div className="text-center mt-16">
           <p className="text-gray-500 text-lg">
             Your wishlist is empty 😢
           </p>
+
+          {/* redirect to homepage */}
           <button
             onClick={() => navigate("/")}
             className="mt-4 btn btn-primary"
@@ -60,14 +80,17 @@ const Wishlist = () => {
           </button>
         </div>
       ) : (
+
         /* Product Grid */
         <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+
           {products.map((product) => (
             <div
               key={product._id}
               className="relative bg-white rounded-2xl shadow-md hover:shadow-xl transition p-4"
             >
-              {/* Remove Button */}
+
+              {/*  Remove Button */}
               <button
                 onClick={() => removeHandler(product._id)}
                 className="absolute top-2 right-2 text-red-500 text-xl hover:scale-110 transition"
@@ -75,21 +98,22 @@ const Wishlist = () => {
                 ❤️
               </button>
 
-              {/* Product Click */}
+              {/*  Product Click Area */}
               <div
                 onClick={() =>
                   navigate(`/product?productId=${product._id}`)
                 }
                 className="cursor-pointer"
               >
-                {/* Image */}
+
+                {/*  Image */}
                 <img
                   src={product.productImage}
                   alt={product.productName}
                   className="h-40 mx-auto object-contain"
                 />
 
-                {/* Info */}
+                {/*  Info */}
                 <h2 className="font-semibold mt-2 text-gray-800">
                   {product.productName}
                 </h2>
@@ -98,7 +122,7 @@ const Wishlist = () => {
                   {product.brandName}
                 </p>
 
-                {/* Price */}
+                {/* Price Section */}
                 <div className="mt-2">
                   {product.salePrice ? (
                     <div className="flex gap-2 items-center">
@@ -117,7 +141,7 @@ const Wishlist = () => {
                 </div>
               </div>
 
-              {/* Button */}
+              {/* View Button */}
               <button
                 onClick={() =>
                   navigate(`/product?productId=${product._id}`)
@@ -126,6 +150,7 @@ const Wishlist = () => {
               >
                 View Product
               </button>
+
             </div>
           ))}
         </div>

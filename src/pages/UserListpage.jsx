@@ -4,61 +4,80 @@ import api from "../api/axios";
 import { useLocation } from 'react-router-dom';
 
 const UserListpage = () => {
-     const [users, setUsers] = useState([]);
-      const location = useLocation();
-       const params = new URLSearchParams(location.search);
-      const role=params.get("role");
-     
-    useEffect(() => {
-   api.get(
-  "/api/admin/user-list",
-  {
-    params: { role },
-    withCredentials: true, // ✅ cookie-based auth
-  }
-)
-    .then(res=>{
+
+  //  state to store users
+  const [users, setUsers] = useState([]);
+
+  //  access current URL
+  const location = useLocation();
+
+  // extract query params
+  const params = new URLSearchParams(location.search);
+
+  // get role filter from URL (?role=...)
+  const role = params.get("role");
+
+ 
+  useEffect(() => {
+
+    //  API call to fetch users
+    api.get(
+      "/api/admin/user-list",
+      {
+        params: { role }, // send role filter
+        withCredentials: true, // cookie-based authentication
+      }
+    )
+      .then(res => {
+
+        //  store users in state
+        setUsers(res.data.users);
+
         
-         
-         setUsers(res.data.users)
-         console.log(res.data);
-         
-          
-        })
-        .catch(err=>{
-          
-          console.log(err.response);
-          
-          
-        })
-  }, [role,users]);
-  
+
+      })
+      .catch(err => {
+
+        // error logging 
+        console.log(err.response);
+
+      });
+
+  }, [role, users]); 
   return (
-  <>
-  <div className="container mx-auto px-4">
-    <h1 className="text-2xl font-bold text-center mb-6">User List</h1>
+    <>
+      <div className="container mx-auto px-4">
 
-    <div
-      className="
-        grid 
-        gap-6 
-        justify-center
-        sm:grid-cols-1 
-        md:grid-cols-2 
-        lg:grid-cols-3 
-        xl:grid-cols-4
-        items-stretch
-      "
-    >
-      {users.map((item) => (
-        <div key={item._id} className="flex">
-          <UserCard user={item} className="flex-1 h-full" />
+        {/* page title */}
+        <h1 className="text-2xl font-bold text-center mb-6">User List</h1>
+
+        {/*  grid layout for user cards */}
+        <div
+          className="
+            grid 
+            gap-6 
+            justify-center
+            sm:grid-cols-1 
+            md:grid-cols-2 
+            lg:grid-cols-3 
+            xl:grid-cols-4
+            items-stretch
+          "
+        >
+
+          {/*  render each user */}
+          {users.map((item) => (
+            <div key={item._id} className="flex">
+
+              {/*  individual user card */}
+              <UserCard user={item} className="flex-1 h-full" />
+
+            </div>
+          ))}
+
         </div>
-      ))}
-    </div>
-  </div>
-</>
-
+      </div>
+    </>
   )
 }
 

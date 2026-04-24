@@ -4,62 +4,82 @@ import { useLocation } from "react-router-dom";
 import api from "../api/axios";
 
 const OrderDetailspage = () => {
+  // state to store order details
   const [order, setOrder] = useState(null);
 
+  // get orderId from query params
   const location = useLocation();
   const params = new URLSearchParams(location.search);
   const orderId = params.get("orderId");
-  const fetchOrder = () => {
-  return api.get("/api/seller/order-details", {
-    params: { orderId },
-    withCredentials: true,
-  });
-};
 
+  // reusable API call to fetch order
+  const fetchOrder = () => {
+    return api.get("/api/seller/order-details", {
+      params: { orderId },
+      withCredentials: true,
+    });
+  };
+
+  // fetch order when component mounts or orderId changes
   useEffect(() => {
     if (orderId) {
       api.get(
-  "/api/seller/order-details",   // ✅ proxy-relative
-  {
-    params: { orderId },
-    withCredentials: true,       // ✅ cookie auth only
-  }
-)
-        .then((res) => setOrder(res.data.order))
-        .catch((err) => console.log(err));
+        "/api/seller/order-details",
+        {
+          params: { orderId },
+          withCredentials: true,
+        }
+      )
+        .then((res) => setOrder(res.data.order)) // store order data
+        .catch((err) => {
+          // improved error logging
+          console.error("Error fetching order:", {
+            message: err.message,
+            status: err.response?.status,
+            data: err.response?.data,
+          });
+        });
     }
   }, [orderId]);
 
+  // show loading until order is fetched
   if (!order) return <p className="text-center mt-10">Loading...</p>;
 
+  // handle status update
   const clickHandler = async (event) => {
     const status = event.target.value;
 
-  try {
-    await api.put(
-      "/api/seller/status-update",
-      { orderId: order._id, status },
-      { withCredentials: true }
-    );
+    try {
+      // update order status
+      await api.put(
+        "/api/seller/status-update",
+        { orderId: order._id, status },
+        { withCredentials: true }
+      );
 
-    // ✅ REFRESH ORDER DATA
-    const res = await fetchOrder();
-    setOrder(res.data.order);
+      // refresh order after update
+      const res = await fetchOrder();
+      setOrder(res.data.order);
 
-  } catch (err) {
-    console.error(err.response?.data || err.message);
-  }
+    } catch (err) {
+      console.error(err.response?.data || err.message); // log update error
+    }
   };
 
   return (
     <div className="container mx-auto px-4 py-6">
       <div className="bg-white shadow-lg rounded-2xl p-6 max-w-4xl mx-auto">
-        {/* Order products */}
-        <h2 className="text-2xl font-semibold mb-4 text-center">Order Details</h2>
+
+        {/* Title */}
+        <h2 className="text-2xl font-semibold mb-4 text-center">
+          Order Details
+        </h2>
+
+        {/* Products list */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
           {order.products?.map((item, index) => (
             <OrderProductCard
-              key={index}
+              key={index} 
               product={item.productId}
               quantity={item.quantity}
               cancelled={item.cancelled}
@@ -67,10 +87,15 @@ const OrderDetailspage = () => {
           ))}
         </div>
 
-        {/* Customer info */}
+        {/* Customer details */}
         <div className="space-y-2 text-gray-700">
-          <p><span className="font-semibold">Customer name:</span> {order.name}</p>
-          <p><span className="font-semibold">Phone:</span> {order.phone}</p>
+          <p>
+            <span className="font-semibold">Customer name:</span> {order.name}
+          </p>
+          <p>
+            <span className="font-semibold">Phone:</span> {order.phone}
+          </p>
+
           <p className="font-semibold">Address:</p>
           <ul className="pl-4 list-disc text-gray-600">
             <li>House name: {order.houseName}</li>
@@ -81,26 +106,36 @@ const OrderDetailspage = () => {
             <li>State: {order.state}</li>
           </ul>
 
-          <p><span className="font-semibold">Payment method:</span> {order.paymentMethod}</p>
+          <p>
+            <span className="font-semibold">Payment method:</span>{" "}
+            {order.paymentMethod}
+          </p>
+
           <p>
             <span className="font-semibold">Ordered date:</span>{" "}
             {new Date(order.ordered_date).toLocaleDateString()}
           </p>
-          <p><span className="font-semibold">Status:</span> {order.status}</p>
+
+          <p>
+            <span className="font-semibold">Status:</span> {order.status}
+          </p>
         </div>
 
-        {order.status==="cancelled"?"":<div className="mt-6 flex justify-end">
-          <select
-            defaultValue="Update status"
-            className="select select-bordered w-48"
-            onChange={clickHandler}
-          >
-            <option disabled>Update status</option>
-            <option value="shipped">Shipped</option>
-            <option value="delivered">Delivered</option>
-          </select>
-        </div>}
-        
+        {/* Status update dropdown (hidden if cancelled) */}
+        {order.status === "cancelled" ? "" : (
+          <div className="mt-6 flex justify-end">
+            <select
+              defaultValue="Update status"
+              className="select select-bordered w-48"
+              onChange={clickHandler}
+            >
+              <option disabled>Update status</option>
+              <option value="shipped">Shipped</option>
+              <option value="delivered">Delivered</option>
+            </select>
+          </div>
+        )}
+
       </div>
     </div>
   );

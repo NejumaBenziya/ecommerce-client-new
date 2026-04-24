@@ -1,6 +1,14 @@
+/*  Import Tailwind CSS base, components, utilities */
 @import "tailwindcss";
-@plugin "daisyui";
-.Toastify__toast-container {
-  z-index: 9999 !important;
-}
 
+/* Enable DaisyUI plugin (component library on top of Tailwind) */
+@plugin "daisyui";
+
+/*  React Toastify container styling */
+.Toastify__toast-container {
+
+  
+  z-index: 9999 !important;
+
+ 
+}

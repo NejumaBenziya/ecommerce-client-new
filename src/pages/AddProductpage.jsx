@@ -3,54 +3,83 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const AddProductpage = () => {
+
+  //  Form state (stores all input values)
   const [data, setData] = useState({
-    productImage: "",
-    brandName: "",
-    productName: "",
-    productCategory: "",
-    weight: "",
-    price: "",
-    quantity: "",
+    productImage: "",     // image URL
+    brandName: "",        // brand name
+    productName: "",      //  product name
+    productCategory: "",  //  category (radio)
+    weight: "",           //  weight
+    price: "",            //  price
+    quantity: "",         //  stock quantity
   });
 
+  // Navigation hook (redirect after success)
   const navigate = useNavigate();
 
+  //  Submit handler (called on form submit)
   const submitHandler = async (event) => {
-    event.preventDefault();
+    event.preventDefault(); // prevent page reload
 
     try {
-     const res = await api.post(
-  "/api/admin/addproduct",   // ✅ use proxy
-  data,
-  {
-    withCredentials: true,   // ✅ cookie auth only
-  }
-);
 
+      //  API call to add product
+      const res = await api.post(
+        "/api/admin/addproduct",   //  backend route
+        data,                      // send form data
+        {
+          withCredentials: true,  // cookie-based auth
+        }
+      );
 
       console.log(" Product added:", res.data);
+
+      // Redirect to admin homepage after success
       navigate("/admin/homepage");
+
     } catch (err) {
-      console.error(" Error adding product:", err.response?.data || err.message);
+
+      //  Log error properly
+      console.error(
+        " Error adding product:",
+        err.response?.data || err.message
+      );
     }
   };
 
+  //  Handle input changes
   const changeHandler = (event) => {
+
+    // Create copy of existing state
     const tempData = { ...data };
+
+    // Update specific field based on input name
     tempData[event.target.name] = event.target.value;
+
+    // Update state
     setData(tempData);
   };
 
   return (
     <div className="min-h-screen flex justify-center items-center bg-base-200 px-4">
+
       {/* Card container */}
       <div className="card w-full max-w-2xl bg-base-100 shadow-xl p-8">
-        <h1 className="text-3xl font-bold text-center mb-6">Add New Product</h1>
 
+        {/*  Title */}
+        <h1 className="text-3xl font-bold text-center mb-6">
+          Add New Product
+        </h1>
+
+        {/* Form */}
         <form onSubmit={submitHandler} className="space-y-4">
-          {/* Product Image */}
+
+          {/*  Product Image */}
           <fieldset className="fieldset">
-            <legend className="fieldset-legend">Product Image address</legend>
+            <legend className="fieldset-legend">
+              Product Image address
+            </legend>
             <input
               type="text"
               name="productImage"
@@ -60,7 +89,7 @@ const AddProductpage = () => {
             />
           </fieldset>
 
-          {/* Brand Name */}
+          {/* 🏷 Brand Name */}
           <fieldset className="fieldset">
             <legend className="fieldset-legend">Brand Name</legend>
             <input
@@ -84,9 +113,13 @@ const AddProductpage = () => {
             />
           </fieldset>
 
-          {/* Product Category */}
+          {/*  Product Category (Radio buttons) */}
           <fieldset className="fieldset">
-            <legend className="fieldset-legend mb-2">Product Category</legend>
+            <legend className="fieldset-legend mb-2">
+              Product Category
+            </legend>
+
+            {/*  Category options */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
               {[
                 { label: "Makeup", value: "makeup" },
@@ -108,7 +141,7 @@ const AddProductpage = () => {
             </div>
           </fieldset>
 
-          {/* Weight */}
+          {/*  Weight */}
           <fieldset className="fieldset">
             <legend className="fieldset-legend">Weight</legend>
             <input
@@ -120,7 +153,7 @@ const AddProductpage = () => {
             />
           </fieldset>
 
-          {/* Price */}
+          {/*  Price */}
           <fieldset className="fieldset">
             <legend className="fieldset-legend">Price</legend>
             <input
@@ -144,10 +177,14 @@ const AddProductpage = () => {
             />
           </fieldset>
 
-          {/* Submit */}
-          <button className="btn btn-success w-full mt-4" type="submit">
+          {/* Submit Button */}
+          <button
+            className="btn btn-success w-full mt-4"
+            type="submit"
+          >
             Add Product
           </button>
+
         </form>
       </div>
     </div>

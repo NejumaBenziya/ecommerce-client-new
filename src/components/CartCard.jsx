@@ -2,72 +2,112 @@ import api from "../api/axios";
 import React from 'react'
 import { toast } from "react-toastify";
 
+/**
+ * CartCard Component
+ * 
+ * Displays a product inside the cart
+ * Handles:
+ * - Remove item
+ * - Increase quantity
+ * - Decrease quantity
+ * - Price calculation (with/without sale)
+ */
 const CartCard = ({ product }) => {
+
+  /**
+   * Remove product from cart
+   */
   const clickHandler = async (event) => {
+    try {
+      const res = await api.put(
+        "/api/user/removecart",
+        { productId: product._id }, // send product id
+        { withCredentials: true }   // send cookies for auth
+      );
 
-    api.put(
-      "/api/user/removecart",
-      { productId: product._id },
-      { withCredentials: true }
-    )
-      .then(res => {
+      setTimeout(() => {
+        window.location.reload();
+      }, 100);
+    } catch (err) {
+      // Log error
+      console.log(err.response);
+    }
+  };
 
-
-
-        console.log(res.data);
-
-
-      })
-      .catch(err => {
-
-        console.log(err.response);
-
-
-      })
-  }
+  /**
+   * Increase quantity (+ button)
+   */
   const plusHandler = async (event) => {
     try {
+
+      // (Not used, but fetched — could be removed later)
       const token = localStorage.getItem("token");
-       if (product.quantity >= product.stock) {
-      toast.error("Out of stock");
-      return;
-    }
+
+      // Prevent exceeding available stock
+      if (product.quantity >= product.stock) {
+        toast.error("Out of stock");
+        return;
+      }
+
+      // Call backend to increase quantity
       const res = await api.put(
         "/api/user/addtocart",
         { productId: product._id },
         { withCredentials: true }
       );
 
-
       console.log(res.data);
+
+      /**
+       * Reload page to reflect updated cart
+       * Not ideal in React (should use state update instead)
+       */
       setTimeout(() => {
         window.location.reload();
       }, 100);
+
     } catch (err) {
       console.log(err.response?.data || err.message);
     }
   }
+
+  /**
+   * Decrease quantity (- button)
+   */
   const minusHandler = async (event) => {
+
+    // Prevent unwanted parent click behavior
     event.preventDefault();
     event.stopPropagation();
 
-
     try {
+
+      // Call backend to decrease quantity
       const res = await api.put(
         "/api/user/quantity",
         { productId: product._id },
         { withCredentials: true }
       );
+
+      /**
+       * Reload page after update
+       * Not optimal — should update UI using state
+       */
       window.location.reload();
 
     } catch (err) {
+
+      // Debug error details
       console.log("ERROR FULL:", err);
       console.log("ERROR DATA:", err.response?.data);
     }
   };
+
   return (
     <div className="hero bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl shadow-lg p-6 mb-6">
+
       <div className="hero-content flex-col lg:flex-row gap-10 w-full">
+
         {/* Product Image */}
         <img
           src={product.productImage}
@@ -77,56 +117,85 @@ const CartCard = ({ product }) => {
 
         {/* Product Info */}
         <div className="flex flex-col justify-between w-full">
+
           {/* Brand & Name */}
           <div>
             <h1 className="text-2xl font-bold text-gray-800">
               {product.brandName}
             </h1>
-            <p className="text-gray-600">{product.productName}</p>
-            <p className="text-sm text-gray-500">Weight: {product.weight}</p>
+
+            <p className="text-gray-600">
+              {product.productName}
+            </p>
+
+            <p className="text-sm text-gray-500">
+              Weight: {product.weight}
+            </p>
           </div>
 
-          {/* Quantity & Price */}
+          {/* Quantity & Price Section */}
           <div className="flex items-center justify-between mt-4">
+
             {/* Quantity Controls */}
             <div className="flex items-center gap-3">
               <p className="text-gray-700 font-medium">Qty:</p>
+
               <div className="flex items-center gap-2 border rounded-lg px-3 py-1 bg-white shadow-sm">
+
+                {/* Decrease Quantity */}
                 <button
                   className="btn btn-sm btn-outline btn-error"
                   onClick={minusHandler}
                 >
                   -
                 </button>
+
+                {/* Current Quantity */}
                 <span className="text-lg font-semibold text-gray-700">
                   {product.quantity}
                 </span>
+
+                {/* Increase Quantity */}
                 <button
                   className="btn btn-sm btn-outline btn-success"
                   onClick={plusHandler}
                 >
                   +
                 </button>
+
               </div>
             </div>
 
             {/* Price Section */}
             <div className="mt-2">
+
+              {/* If product has a sale */}
               {product.salePrice ? (
                 <div className="flex items-center gap-2">
+
+                  {/* Discounted total */}
                   <p className="text-lg font-bold text-red-600">
-                    ₹ {product.salePrice}*{product.quantity}={Math.round(product.salePrice * product.quantity)}
+                    ₹ {product.salePrice} * {product.quantity} = {Math.round(product.salePrice * product.quantity)}
                   </p>
+
+                  {/* Original total */}
                   <p className="text-sm text-gray-500 line-through">
-                    ₹ {product.price}*{product.quantity}={Math.round(product.price * product.quantity)}
+                    ₹ {product.price} * {product.quantity} = {Math.round(product.price * product.quantity)}
                   </p>
+
+                  {/* Discount percentage */}
                   <span className="text-xs bg-red-100 text-red-600 font-semibold px-2 py-0.5 rounded-full">
                     {Math.round(((product.price - product.salePrice) / product.price) * 100)}% OFF
                   </span>
                 </div>
               ) : (
-                <p className="text-lg font-bold text-green-600">₹ {product.price}*{product.quantity}={Math.round(product.price * product.quantity)}</p>
+
+                // Normal price total
+                <p className="text-lg font-bold text-green-600">
+                  ₹ {product.price} * {product.quantity} = {Math.round(product.price * product.quantity)}
+                </p>
               )}
+
             </div>
 
           </div>
@@ -140,10 +209,10 @@ const CartCard = ({ product }) => {
               ❌ Remove
             </button>
           </div>
+
         </div>
       </div>
     </div>
-
   )
 }
 

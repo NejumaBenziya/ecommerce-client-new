@@ -4,36 +4,52 @@ import api from "../api/axios";
 import ProductDetails from '../components/ProductDetails';
 
 function Productpage() {
-    const [product, setProduct] = useState([]);
-    
-         const location = useLocation();
-      const params = new URLSearchParams(location.search);
-     const productId=params.get("productId");
-   
-console.log(productId)
- 
 
+  //  State to store single product
+  
+  const [product, setProduct] = useState({});
+
+  //  get current URL location
+  const location = useLocation();
+
+  //  extract query params
+  const params = new URLSearchParams(location.search);
+
+  //  get productId from URL
+  const productId = params.get("productId");
+
+  //  debug log
+  console.log(productId);
+
+  //  fetch product when productId changes
   useEffect(() => {
     if (productId) {
-      
-         api.get("/api/user/product", {
-  params: { productId },
-  withCredentials: true, // optional for public route
-})
-      
+
+      //  API call to get product details
+      api.get("/api/user/product", {
+        params: { productId },
+        withCredentials: true, // optional (for cookies if needed)
+      })
         .then((res) => {
-          setProduct(res.data.product)
-          
+
+          //  set product data from response
+          setProduct(res.data.product);
+
         })
-        .catch(err => console.log(err));
+        .catch(err => console.log(err)); 
+
     }
   }, [productId]);
+
+  //  loading fallback (won't work properly due to [] initial state)
   if (!product) return <p>Loading...</p>;
 
-    
   return (
-    <div><ProductDetails product={product} key={product._id}/></div>
+    <div>
+      {/*  pass product to child component */}
+      <ProductDetails product={product} key={product._id}/>
+    </div>
   )
 }
 
-export default Productpage
+export default Productpage;

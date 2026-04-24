@@ -2,30 +2,35 @@ import api from "../api/axios";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate, Link } from "react-router-dom";
-import { logout, setAuthUser,setWishlist } from "../globalState/login/loginSlice";
-import { useEffect } from "react";
+import { setAuthUser, setWishlist } from "../globalState/login/loginSlice";
+
 
 const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  // store error message
   const [error, setError] = useState("");
+
+  // store form data
   const [data, setData] = useState({
     email: "",
     password: "",
   });
 
+  // handle login submit
   const submitHandler = (event) => {
-    event.preventDefault();
+    event.preventDefault(); // prevent page reload
 
     api
       .post(
         "/api/user/login",
         data,
-        { withCredentials: true }
+        { withCredentials: true } // send cookies
       )
-      .then(async (res) => {
+      .then((res) => {
 
+        // store user data in redux
         dispatch(
           setAuthUser({
             user: res.data.user,
@@ -33,14 +38,17 @@ const Login = () => {
             
           })
         );
-         dispatch(
+
+        // store wishlist in redux
+        dispatch(
           setWishlist({
-           wishlist : res.data.user.wishlist
-            
+            wishlist: res.data.user.wishlist
           })
         );
+
         const role = res.data.user.role;
 
+        // redirect based on role
         if (role === "seller") {
           navigate("/seller/homepage");
         } else if (role === "admin") {
@@ -51,10 +59,12 @@ const Login = () => {
         }
       })
       .catch((err) => {
+        // show backend error
         setError(err.response?.data?.message || "Something went wrong");
       });
   };
 
+  // update input fields
   const changeHandler = (event) => {
     setData({
       ...data,
@@ -68,6 +78,7 @@ const Login = () => {
         <h2 className="text-2xl font-bold text-center mb-6">Login</h2>
 
         <form onSubmit={submitHandler} className="space-y-4">
+          {/* Email input */}
           <fieldset className="fieldset">
             <legend className="fieldset-legend">Email</legend>
             <input
@@ -81,6 +92,7 @@ const Login = () => {
             />
           </fieldset>
 
+          {/* Password input */}
           <fieldset className="fieldset">
             <legend className="fieldset-legend">Password</legend>
             <input
@@ -92,14 +104,18 @@ const Login = () => {
               value={data.password}
               required
             />
+
+            {/* show error message */}
             {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
           </fieldset>
 
+          {/* submit button */}
           <button className="btn btn-success w-full" type="submit">
             Login
           </button>
         </form>
 
+        {/* register link */}
         <p className="text-center mt-4">
           Not registered yet?{" "}
           <Link to="/register" className="text-accent font-semibold">
