@@ -23,36 +23,38 @@ const authSlice = createSlice({
 
       //  store role separately for easy access
       state.role = action.payload.role;
-     
+
       //  update cart count (fallback to 0 if undefined)
       state.cartLength = action.payload.cartLength || 0;
 
       //  mark user as logged in
       state.isLoggedIn = true;
-      
+
       // auth check completed
-      state.authChecked = true; 
+      state.authChecked = true;
     },
 
     //  Update wishlist globally
     setWishlist: (state, action) => {
       state.wishlist = action.payload.wishlist;
     },
-     setCartLength: (state, action) => {
-    state.cartLength = action.payload; 
-  },
+
+    //  Update cart item count globally (used when items are added/removed)
+    setCartLength: (state, action) => {
+      state.cartLength = action.payload;
+    },
     //  Logout user
     logout: (state) => {
 
       // reset auth state
       state.isLoggedIn = false;
       state.role = null;
-      
+
       // remove user data
       state.user = null;
 
       // keep authChecked true so UI doesn't hang
-      state.authChecked = true; 
+      state.authChecked = true;
     },
 
     //  Used when auth check fails (ex: token invalid)
@@ -63,7 +65,7 @@ const authSlice = createSlice({
 });
 
 // Export actions
-export const { setAuthUser, setWishlist,setCartLength, logout, authFinished } = authSlice.actions;
+export const { setAuthUser, setWishlist, setCartLength, logout, authFinished } = authSlice.actions;
 
 //  Export reducer
 export default authSlice.reducer;

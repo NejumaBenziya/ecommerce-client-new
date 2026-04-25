@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
-import { setCartLength} from "../globalState/login/loginSlice";
+import { setCartLength } from "../globalState/login/loginSlice";
 
 function Orderpage() {
 
@@ -93,9 +93,11 @@ function Orderpage() {
 
         // stop loading
         setLoading(false);
-        
+
         // redirect to orders page
         navigate("/user-orders");
+
+        // reset global cart count after successful order
         dispatch(setCartLength(0));
 
         return; // stop further execution
@@ -111,7 +113,7 @@ function Orderpage() {
       //  handle SDK failure
       if (!loaded) {
         toast.error("Razorpay SDK failed to load");
-        return; 
+        return;
       }
 
       // 1 Create Razorpay order from backend
@@ -148,7 +150,7 @@ function Orderpage() {
         modal: {
           ondismiss: function () {
             toast.error("Payment cancelled");
-           
+
           },
         },
 
@@ -171,10 +173,13 @@ function Orderpage() {
 
             // success message
             toast.success("💳 Payment successful & order placed!");
-            
+
             // redirect
             navigate("/user-orders");
+
+            // reset global cart count after successful payment & order placement
             dispatch(setCartLength(0));
+
           } catch (err) {
 
             // very important case:
