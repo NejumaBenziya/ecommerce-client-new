@@ -18,7 +18,7 @@ const MainCarousal = () => {
         <div id="item1" className="carousel-item w-full">
           <img
             alt="Carousel image" // accessibility text
-            src="../public/images/luna-banner1.png"
+            src="/images/luna-banner1.png"
             className="w-full h-96" // full width + fixed height
           />
         </div>
@@ -27,7 +27,7 @@ const MainCarousal = () => {
         <div id="item2" className="carousel-item w-full">
           <img
             alt="Carousel image"
-            src="../public/images/luna-banner2.png"
+            src="/images/luna-banner2.png"
             className="w-full h-96"
           />
         </div>
@@ -36,7 +36,7 @@ const MainCarousal = () => {
         <div id="item3" className="carousel-item w-full">
           <img
             alt="Carousel image"
-            src="../public/images/luna-banner3.png"
+            src="/images/luna-banner3.png"
             className="w-full h-96"
           />
         </div>
@@ -45,7 +45,7 @@ const MainCarousal = () => {
         <div id="item4" className="carousel-item w-full">
           <img
             alt="Carousel image"
-            src="../public/images/luna-banner4.png"
+            src="/images/luna-banner4.png"
             className="w-full h-96"
           />
         </div>
