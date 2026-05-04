@@ -31,20 +31,19 @@ const UserLayout = () => {
             wishlist: res.data.user.wishlist
           })
         );
+        
       })
 
-      .catch((err) => {
+     .catch((err) => {
+  console.error({
+    message: err.message,
+    data: err.response?.data,
+    status: err.response?.status,
+  });
 
-        //  Log structured error (very useful for debugging)
-        console.error({
-          message: err.message,               // basic error message
-          data: err.response?.data,           // backend error response
-          status: err.response?.status,       // HTTP status (401, 500, etc.)
-        });
-
-        //  Mark auth check completed (prevents UI freeze)
-        dispatch(authFinished());
-      });
+ 
+  dispatch(authFinished());
+});
 
   }, [dispatch]);
 

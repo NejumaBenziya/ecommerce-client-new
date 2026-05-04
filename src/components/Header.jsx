@@ -171,13 +171,13 @@ const Header = () => {
             )}
           </ul>
         </div>
-
+        
         {/* Logo */}
         <Link
           to="/"
           className="btn btn-ghost text-accent text-xl font-semibold"
         >
-          Luna
+          🌙 Luna
         </Link>
       </div>
 

@@ -18,7 +18,7 @@ const MainCarousal = () => {
         <div id="item1" className="carousel-item w-full">
           <img
             alt="Carousel image" // accessibility text
-            src="https://www.infinitimall.com/wp-content/uploads/2022/06/Nykaa-Health-Beauty-Infinti-Mall-Andheri.jpg"
+            src="../public/images/luna-banner1.png"
             className="w-full h-96" // full width + fixed height
           />
         </div>
@@ -27,7 +27,7 @@ const MainCarousal = () => {
         <div id="item2" className="carousel-item w-full">
           <img
             alt="Carousel image"
-            src="https://theradishingreview.com/wp-content/uploads/2020/03/SkinCare_RR.jpg"
+            src="../public/images/luna-banner2.png"
             className="w-full h-96"
           />
         </div>
@@ -36,7 +36,7 @@ const MainCarousal = () => {
         <div id="item3" className="carousel-item w-full">
           <img
             alt="Carousel image"
-            src="https://tse1.mm.bing.net/th/id/OIP.J5qj_osiVlVpko8oeotEOQHaHa?rs=1&pid=ImgDetMain&o=7&rm=3"
+            src="../public/images/luna-banner3.png"
             className="w-full h-96"
           />
         </div>
@@ -45,7 +45,7 @@ const MainCarousal = () => {
         <div id="item4" className="carousel-item w-full">
           <img
             alt="Carousel image"
-            src="https://tse1.explicit.bing.net/th/id/OIP.-SAmCK6Bj0TiQTOZIJOUKAHaFj?rs=1&pid=ImgDetMain&o=7&rm=3"
+            src="../public/images/luna-banner4.png"
             className="w-full h-96"
           />
         </div>
